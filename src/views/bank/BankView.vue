@@ -1,5 +1,5 @@
 <template>
-  <!-- MAIN GRID WITH TOW COLUMNS -->
+  <!-- MAIN GRID WITH TWO COLUMNS -->
   <div class="grid grid-cols-2 gap-1  mx-auto">
 
     <!-- Form Cell -->
