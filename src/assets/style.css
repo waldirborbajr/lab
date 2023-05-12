@@ -2,3 +2,57 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Forms */
+
+.bp-form-label {
+  @apply font-medium tracking-wider text-xl mb-9 text-slate-800 
+}
+
+.bp-section {
+  @apply w-[590px] mx-auto mt-14 shadow-lg p-8 rounded-xl border border-slate-300 bg-slate-400
+}
+
+.bp-grid {
+  @apply grid gap-4;
+  grid-template-columns: 50% 50%
+}
+
+.bp-field-div {
+  @apply mb-4 px-2 
+}
+
+.bp-input {
+  @apply w-full border p-1 rounded focus:border-blue-500 border border-slate-500 
+}
+
+.bp-required {
+  @apply text-xs text-red-600 mt-1
+}
+
+.bp-label {
+  @apply block mb-1 text-sm
+}
+
+.bp-div-button {
+  @apply grid grid-cols-2 gap-4 
+}
+
+.bp-div-three-button {
+  @apply grid grid-cols-3 gap-4 mt-4 text-lg
+}
+
+.bp-button {
+  @apply w-full border rounded-lg text-lg p-2
+}
+
+.bp-bt-new {
+  @apply bg-slate-300 text-slate-900 bg-blue-400 text-slate-200
+}
+
+.bp-bt-cancel {
+  @apply bg-slate-300 text-slate-900
+}
+
+.bp-bt-save {
+  @apply bg-green-600 text-slate-200 
+}
