@@ -44,10 +44,9 @@
           <div class="bp-font-grid bg-blue-600">Acount</div>
           <div class="bp-font-grid bg-blue-600">Delete</div>
 
-          {{ banks }}
 
           <template v-if="banks.length > 0">
-            <div v-for="bank in banks" :key="bank.id">
+            <div v-for="(bank, index) in banks" :key="index">
               <div class="bp-font-grid bg-slate-300">{{ bank.name }}</div>
               <div class="bp-font-grid bg-slate-300">{{ bank.agency }}</div>
               <div class="bp-font-grid bg-slate-300">{{ bank.account }}</div>
@@ -76,7 +75,7 @@ onBeforeMount(async () => {
   try {
     await http.get("/bank")
       .then(response => {
-        banks.value = response.data
+        banks.value = response.data.data
       })
   } catch (error) {
     console.log(error)
