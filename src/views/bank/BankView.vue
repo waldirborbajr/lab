@@ -8,17 +8,19 @@
       <div>
         <div class="bp-field-div">
           <label class="bp-label" for="bank">Bank:</label>
-          <input id="bank" class="bp-input" type="text" autofocus placeholder="Bank name..." />
+          <input v-model.trim="bank" id="bank" class="bp-input" type="text" autofocus placeholder="Bank name..." />
           <div class="bp-required">Name field is required</div>
         </div>
         <div class="bp-field-div">
           <label class="bp-label" for="agency">Agency:</label>
-          <input id="agency" class="bp-input" type="text" autofocus placeholder="Agency number..." />
+          <input v-model.trim="agency" id="agency" class="bp-input" type="text" autofocus
+            placeholder="Agency number..." />
           <div class="bp-required">Name field is required</div>
         </div>
         <div class="bp-field-div">
           <label class="bp-label" for="account">Account:</label>
-          <input id="account" class="bp-input" type="text" autofocus placeholder="Account number..." />
+          <input v-model.trim="account" id="account" class="bp-input" type="text" autofocus
+            placeholder="Account number..." />
           <div class="bp-required">Name field is required</div>
         </div>
       </div>
@@ -27,7 +29,7 @@
       <div class="bp-div-three-button">
         <button class="bp-button bp-bt-new">New</button>
         <button class="bp-button bp-bt-cancel">Cancel</button>
-        <button class="bp-button bp-bt-save">Save</button>
+        <button @click="saveBank" type="button" class="bp-button bp-bt-save">Save</button>
       </div>
     </div>
 
@@ -101,7 +103,32 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts">
+
+import http from "../../common/http-common.ts"
+
+export default {
+  data() {
+    return {
+      bank: "",
+      agency: "",
+      account: "",
+    }
+  },
+
+  methods: {
+    saveBank() {
+
+      const postData = {
+        bank: this.bank,
+        agency: this.agency,
+        account: this.account,
+      }
+
+      http.post("/bank", postData)
+    }
+  }
+}
 
 </script>
 
