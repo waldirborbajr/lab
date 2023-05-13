@@ -50818,10 +50818,10 @@ async function saveBank() {
           <div class="bp-font-grid bg-blue-600">Delete</div>
 
           <template v-if="banks.length > 0">
-            <div v-for="(i ) in banks " :key="i.id">
-              <div class="bp-font-grid bg-slate-300">{{ i.name}}</div>
-              <div class="bp-font-grid bg-slate-300">{{ i.agency }}</div>
-              <div class="bp-font-grid bg-slate-300">{{ i.account }}</div>
+            <div v-for="(bank, index ) in banks " :key="index">
+              <div class="bp-font-grid bg-slate-300">{{ bank.name}}</div>
+              <div class="bp-font-grid bg-slate-300">{{ bank.agency }}</div>
+              <div class="bp-font-grid bg-slate-300">{{ bank.account }}</div>
               <div class="bp-font-grid bg-slate-300"><svg xmlns="http://www.w3.org/2000/svg" fill="none"
                   viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                   <path stroke-linecap="round" stroke-linejoin="round"
@@ -50862,7 +50862,7 @@ onMounted(() => {
   console.log('onMounted called')
 })
 
-const bank= reactive({
+const bank = reactive({
   id: 0,
   name: '',
   agency: '',
