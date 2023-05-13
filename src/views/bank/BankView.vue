@@ -8,19 +8,19 @@
       <div>
         <div class="bp-field-div">
           <label class="bp-label" for="bank">Bank:</label>
-          <input v-bank.trim="bankModel.bank" id="bank" class="bp-input" type="text" autofocus
+          <input v-model.trim="bankModel.bank" id="bank" class="bp-input" type="text" autofocus required
             placeholder="Bank name..." />
           <div class="bp-required">Name field is required</div>
         </div>
         <div class="bp-field-div">
           <label class="bp-label" for="agency">Agency:</label>
-          <input v-bank.trim="bankModel.agency" id="agency" class="bp-input" type="text" autofocus
+          <input v-model.trim="bankModel.agency" id="agency" class="bp-input" type="text" autofocus required
             placeholder="Agency number..." />
           <div class="bp-required">Name field is required</div>
         </div>
         <div class="bp-field-div">
           <label class="bp-label" for="account">Account:</label>
-          <input v-bank.trim="bankModel.account" id="account" class="bp-input" type="text" autofocus
+          <input v-model.trim="bankModel.account" id="account" class="bp-input" type="text" autofocus required
             placeholder="Account number..." />
           <div class="bp-required">Name field is required</div>
         </div>
@@ -106,25 +106,23 @@
 
 <script setup lang="ts">
 
-import { ref, onMounted } from 'vue'
+import { reactive, onMounted, } from 'vue'
 
 import http from "../../common/http-common.ts"
 
-// lifecycle hooks
 onMounted(() => {
   console.log(`onMounted called`)
 })
 
-const bankModel = ref({
-  bank: "",
-  agency: "",
-  account: "",
+const bankModel = reactive({
+  bank: '',
+  agency: '',
+  account: '',
 })
 
 function saveBank() {
   http.post("/bank", bankModel)
 }
-
 
 </script>
 
