@@ -8,18 +8,19 @@
       <div>
         <div class="bp-field-div">
           <label class="bp-label" for="bank">Bank:</label>
-          <input v-model.trim="bank" id="bank" class="bp-input" type="text" autofocus placeholder="Bank name..." />
+          <input v-bank.trim="bankModel.bank" id="bank" class="bp-input" type="text" autofocus
+            placeholder="Bank name..." />
           <div class="bp-required">Name field is required</div>
         </div>
         <div class="bp-field-div">
           <label class="bp-label" for="agency">Agency:</label>
-          <input v-model.trim="agency" id="agency" class="bp-input" type="text" autofocus
+          <input v-bank.trim="bankModel.agency" id="agency" class="bp-input" type="text" autofocus
             placeholder="Agency number..." />
           <div class="bp-required">Name field is required</div>
         </div>
         <div class="bp-field-div">
           <label class="bp-label" for="account">Account:</label>
-          <input v-model.trim="account" id="account" class="bp-input" type="text" autofocus
+          <input v-bank.trim="bankModel.account" id="account" class="bp-input" type="text" autofocus
             placeholder="Account number..." />
           <div class="bp-required">Name field is required</div>
         </div>
@@ -103,32 +104,27 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
+
+import { ref, onMounted } from 'vue'
 
 import http from "../../common/http-common.ts"
 
-export default {
-  data() {
-    return {
-      bank: "",
-      agency: "",
-      account: "",
-    }
-  },
+// lifecycle hooks
+onMounted(() => {
+  console.log(`onMounted called`)
+})
 
-  methods: {
-    saveBank() {
+const bankModel = ref({
+  bank: "",
+  agency: "",
+  account: "",
+})
 
-      const postData = {
-        bank: this.bank,
-        agency: this.agency,
-        account: this.account,
-      }
-
-      http.post("/bank", postData)
-    }
-  }
+function saveBank() {
+  http.post("/bank", bankModel)
 }
+
 
 </script>
 
