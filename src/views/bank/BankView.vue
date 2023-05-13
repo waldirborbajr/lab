@@ -7,8 +7,8 @@
       <h2 class="bp-form-label">Bank Form</h2>
       <div>
         <div class="bp-field-div">
-          <label class="bp-label" for="bank">Bank:</label>
-          <input v-model.trim="bankModel.bank" id="bank" class="bp-input" type="text" autofocus required
+          <label class="bp-label" for="name">Bank:</label>
+          <input v-model.trim="bankModel.name" id="name" class="bp-input" type="text" autofocus required
             placeholder="Bank name..." />
           <div class="bp-required">Name field is required</div>
         </div>
@@ -44,11 +44,13 @@
           <div class="bp-font-grid bg-blue-600">Acount</div>
           <div class="bp-font-grid bg-blue-600">Delete</div>
 
+          {{ banks }}
+
           <template v-if="banks.length > 0">
-            <div v-for="content in banks" :key="content.id">
-              <div class="bp-font-grid bg-slate-300">{{ content.bank }}</div>
-              <div class="bp-font-grid bg-slate-300">{{ content.agency }}</div>
-              <div class="bp-font-grid bg-slate-300">{{ content.account }}</div>
+            <div v-for="bank in banks" :key="bank.id">
+              <div class="bp-font-grid bg-slate-300">{{ bank.name }}</div>
+              <div class="bp-font-grid bg-slate-300">{{ bank.agency }}</div>
+              <div class="bp-font-grid bg-slate-300">{{ bank.account }}</div>
               <div class="bp-font-grid bg-slate-300"><svg xmlns="http://www.w3.org/2000/svg" fill="none"
                   viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                   <path stroke-linecap="round" stroke-linejoin="round"
@@ -70,13 +72,11 @@ import { reactive, onBeforeMount, onMounted, ref } from 'vue'
 import http from "../../common/http-common.ts"
 
 const banks = ref([])
-
 onBeforeMount(async () => {
   try {
-    http.get("/bank")
+    await http.get("/bank")
       .then(response => {
         banks.value = response.data
-        console.log(banks)
       })
   } catch (error) {
     console.log(error)
@@ -89,7 +89,7 @@ onMounted(() => {
 
 const bankModel = reactive({
   id: 0,
-  bank: '',
+  name: '',
   agency: '',
   account: '',
 })

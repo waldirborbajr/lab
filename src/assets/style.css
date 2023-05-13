@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  @apply antialiased text-slate-900 bg-slate-50;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+}
+
+#app {
+  @apply flex flex-col min-h-screen overflow-x-hidden;
+}
+
 /* Forms */
 
 .bp-form-label {
