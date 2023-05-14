@@ -37,6 +37,24 @@
     <!-- Grid Cell -->
     <div class="bp-section">
 
+      <div class="grid grid-cols-4 gap-4 bp-grid-font-head">
+        <div>Bank</div>
+        <div>Agency</div>
+        <div>Account</div>
+        <div>Action</div>
+      </div>
+      <div v-for="(bank, index) in banks" :key="index">
+        <div class="grid grid-cols-4 gap-4">
+          <div>{{ bank['name'] }}</div>
+          <div>{{ bank['agency'] }}</div>
+          <div>{{ bank['account'] }}</div>
+          <div>
+            <Trash2 />
+          </div>
+        </div>
+      </div>
+
+      <!--
       <table class="table-auto table-striped">
         <thead>
           <tr>
@@ -57,7 +75,7 @@
           </tr>
         </tbody>
       </table>
-
+-->
     </div>
   </div>
 </template>
