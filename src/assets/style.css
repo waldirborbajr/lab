@@ -21,7 +21,6 @@
   @apply w-[600px] mx-auto mt-4 shadow-lg p-8 rounded-xl border border-slate-300 bg-slate-400
 }
 
-
 .bp-field-div {
   @apply mb-4 px-2 
 }
@@ -69,4 +68,10 @@
 
 .bp-grid-font-head {
   @apply font-mono font-semibold font-thin bg-slate-500 text-slate-200
+}
+
+@layer utilities {
+  .striped div:nth-child(even) {
+    @apply bg-yellow-300
+  }
 }
