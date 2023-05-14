@@ -5,6 +5,7 @@ specifiers:
   '@vitejs/plugin-vue': ^4.1.0
   autoprefixer: ^10.4.14
   axios: ^1.4.0
+  lucide-vue-next: ^0.216.0
   postcss: ^8.4.23
   tailwindcss: ^3.3.2
   typescript: ^5.0.2
@@ -16,6 +17,7 @@ specifiers:
 
 dependencies:
   axios: 1.4.0
+  lucide-vue-next: 0.216.0_vue@3.3.1
   vue: 3.3.1
   vue-router: 4.2.0_vue@3.3.1
   vuex: 4.1.0_vue@3.3.1
@@ -809,6 +811,14 @@ packages:
     dependencies:
       yallist: 4.0.0
     dev: true
+
+  /lucide-vue-next/0.216.0_vue@3.3.1:
+    resolution: {integrity: sha512-1NFFXxozy9PIAyEsnPI7d+lDqyxB0mk6qEb14fOgHYeq6+klnEn/Sj0dnbsw+t/1DHy1CplL9lfBDIrvmIPEDw==}
+    peerDependencies:
+      vue: '>=3.0.1'
+    dependencies:
+      vue: 3.3.1
+    dev: false
 
   /magic-string/0.30.0:
     resolution: {integrity: sha512-LA+31JYDJLs82r2ScLrlz1GjSgu66ZV518eyWT+S8VhyQn/JL0u9MeBOvQMGYiPk1DBiSN9DDMOcXvigJZaViQ==}
