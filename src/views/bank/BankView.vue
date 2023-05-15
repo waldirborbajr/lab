@@ -89,7 +89,16 @@ import { Trash2 } from 'lucide-vue-next'
 import http from "../../common/http-common.ts"
 
 const banks = ref([])
-onBeforeMount(async () => {
+onBeforeMount(() => {
+  browseList()
+})
+
+
+onMounted(() => {
+  console.log('onMounted called')
+})
+
+async function browseList() {
   try {
     await http.get("/bank")
       .then(response => {
@@ -98,11 +107,8 @@ onBeforeMount(async () => {
   } catch (error) {
     console.log(error)
   }
-})
 
-onMounted(() => {
-  console.log('onMounted called')
-})
+}
 
 const bankModel = reactive({
   id: 0,
@@ -115,6 +121,10 @@ async function saveBank() {
   await http.post("/bank", bankModel)
     .then((response) => {
       console.log(response.data)
+      browseList()
+      bankModel.name = ""
+      bankModel.agency = ""
+      bankModel.account = ""
     })
 }
 </script>
