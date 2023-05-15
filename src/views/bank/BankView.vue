@@ -49,9 +49,7 @@
           <div>{{ bank['account'] }}</div>
           <div class="flex p-1">
             <Trash2 @click="deleteBank(bank['id'])" />
-            <Trash2 />
-            <Trash2 />
-            <Trash2 />
+            <Edit @click="editBank(bank['id'])" />
           </div>
         </div>
       </div>
@@ -85,7 +83,7 @@
 
 <script setup lang="ts">
 import { reactive, onBeforeMount, onMounted, ref } from 'vue'
-import { Trash2 } from 'lucide-vue-next'
+import { Trash2, Edit } from 'lucide-vue-next'
 import http from "../../common/http-common.ts"
 
 const banks = ref([])
@@ -131,6 +129,14 @@ async function deleteBank(id) {
   await http.delete(`/bank/${id}`)
     .then(() => {
       browseList()
+    })
+}
+
+async function editBank(id) {
+  await http.get(`/bank/${id}`)
+    .then((response) => {
+      bankModel.value = response.data.data
+
     })
 }
 
