@@ -70,8 +70,10 @@
   @apply font-mono font-semibold font-thin bg-slate-500 text-slate-200
 }
 
-@layer utilities {
-  .striped div:nth-child(even) {
-    @apply bg-yellow-300
-  }
+tr:nth-child(even) {
+  @apply bg-slate-400
+}
+
+tr:nth-child(od) {
+  @apply bg-slate-300
 }

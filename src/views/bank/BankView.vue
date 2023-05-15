@@ -36,8 +36,8 @@
 
     <!-- Grid Cell -->
     <div class="bp-section">
-      <table class="table-auto bg-white w-full">
-        <thead>
+      <table class="table-auto table-striped  bg-white w-full border-collapse: collpase">
+        <thead class="bg-slate-700 text-slate-300 ">
           <tr>
             <th>Bank</th>
             <th>Agency</th>
@@ -46,13 +46,15 @@
           </tr>
         </thead>
         <tbody class="w-full">
-          <tr class="bg-slate-600" v-for="(bank, index) in banks" :key="index">
+          <tr v-for="(bank, index) in banks" :key="index">
             <td>{{ bank['name'] }}</td>
             <td>{{ bank['agency'] }}</td>
             <td>{{ bank['account'] }}</td>
             <td class="flex gap-2">
-              <Trash2 class="" color="red" @click="deleteBank(bank['id'])" />
-              <Edit color="green" @click="editBank(bank['id'])" />
+              <Trash2 class="transition ease-in-out duration-200 hover:scale-125" color="red"
+                @click="deleteBank(bank['id'])" />
+              <Edit class="transition ease-in-out duration-200 hover:scale-125" color="green"
+                @click="editBank(bank['id'])" />
             </td>
           </tr>
         </tbody>
@@ -139,7 +141,6 @@ const saveBank = async () => {
         console.log(error)
       })
   }
-
 }
 
 const deleteBank = async (id: BigInt) => {
