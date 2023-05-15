@@ -83,18 +83,29 @@
 
 <script setup lang="ts">
 
-import { reactive, onBeforeMount, ref } from 'vue'
+import { onBeforeMount, ref, onMounted } from 'vue'
 import { Trash2, Edit } from 'lucide-vue-next'
 import http from "../../common/http-common.ts"
 
+let bankModel = ref({})
+// const bankModel = reactive({
+//   id: 0,
+//   name: '',
+//   agency: '',
+//   account: '',
+// })
 
 // Used to build grid
 // <!-- Grid
 const banks = ref([])
-onBeforeMount(() => {
-  browseList()
+onBeforeMount(async () => {
+  await browseList()
 })
 // --> Grid
+
+onMounted(() => {
+  bankModel.value = {}
+})
 
 const browseList = async () => {
   await http.get("/bank")
@@ -106,21 +117,16 @@ const browseList = async () => {
     })
 }
 
-const bankModel = reactive({
-  id: 0,
-  name: '',
-  agency: '',
-  account: '',
-})
 
 const saveBank = async () => {
-  await http.post("/bank", bankModel)
+  await http.post("/bank", bankModel.value)
     .then((response) => {
       console.log(response.data)
       browseList()
-      bankModel.name = ""
-      bankModel.agency = ""
-      bankModel.account = ""
+      bankModel.value = {}
+      // bankModel.name = ""
+      // bankModel.agency = ""
+      // bankModel.account = ""
     })
     .catch((error) => {
       console.log(error)
@@ -142,6 +148,7 @@ const editBank = async (id: BigInt) => {
     .then((response) => {
       // bankModel.value = response.data.data
       console.log(response.data)
+      bankModel.value = response.data
     })
     .catch((error) => {
       console.log(error)
@@ -149,6 +156,5 @@ const editBank = async (id: BigInt) => {
 }
 
 </script>
-
 
 <style scoped lang="postcss"></style>
