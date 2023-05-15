@@ -95,28 +95,26 @@ const browseList = async () => {
 }
 
 const saveBank = async () => {
-  if (bankModel.value.id === null || bankModel.value.id === 'undefined') {
+  console.log(bankModel.value.id)
+  if (bankModel.value.id === null || bankModel.value.id === undefined) {
+    // New bank
     await http.post("/bank", bankModel.value)
       .then((response) => {
         console.log(response.data)
         browseList()
         bankModel.value = {}
-        // bankModel.name = ""
-        // bankModel.agency = ""
-        // bankModel.account = ""
       })
       .catch((error) => {
         console.log(error)
       })
+
   } else {
+    // Update bank
     await http.put(`/bank/${bankModel.value.id}`, bankModel.value)
       .then((response) => {
         console.log(response.data)
         browseList()
         bankModel.value = {}
-        // bankModel.name = ""
-        // bankModel.agency = ""
-        // bankModel.account = ""
       })
       .catch((error) => {
         console.log(error)
