@@ -53,29 +53,6 @@
           </div>
         </div>
       </div>
-
-      <!--
-      <table class="table-auto table-striped">
-        <thead>
-          <tr>
-            <th>Bank</th>
-            <th>Agency</th>
-            <th>Account</th>
-            <th>Delete</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(bank, index) in banks" :key=index>
-            <td>{{ bank['name'] }}</td>
-            <td>{{ bank['agency'] }}</td>
-            <td>{{ bank['account'] }}</td>
-            <td>
-              <Trash2 :size="24" />
-            </td>
-          </tr>
-        </tbody>
-      </table>
--->
     </div>
   </div>
 </template>
@@ -117,20 +94,35 @@ const browseList = async () => {
     })
 }
 
-
 const saveBank = async () => {
-  await http.post("/bank", bankModel.value)
-    .then((response) => {
-      console.log(response.data)
-      browseList()
-      bankModel.value = {}
-      // bankModel.name = ""
-      // bankModel.agency = ""
-      // bankModel.account = ""
-    })
-    .catch((error) => {
-      console.log(error)
-    })
+  if (bankModel.value.id === null || bankModel.value.id === 'undefined') {
+    await http.post("/bank", bankModel.value)
+      .then((response) => {
+        console.log(response.data)
+        browseList()
+        bankModel.value = {}
+        // bankModel.name = ""
+        // bankModel.agency = ""
+        // bankModel.account = ""
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  } else {
+    await http.put(`/bank/${bankModel.value.id}`, bankModel.value)
+      .then((response) => {
+        console.log(response.data)
+        browseList()
+        bankModel.value = {}
+        // bankModel.name = ""
+        // bankModel.agency = ""
+        // bankModel.account = ""
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }
+
 }
 
 const deleteBank = async (id: BigInt) => {
@@ -148,7 +140,7 @@ const editBank = async (id: BigInt) => {
     .then((response) => {
       // bankModel.value = response.data.data
       console.log(response.data)
-      bankModel.value = response.data
+      bankModel.value = { ...response.data.data }
     })
     .catch((error) => {
       console.log(error)
