@@ -8,7 +8,7 @@
       <div>
         <div class="bp-field-div">
           <label class="bp-label" for="name">Bank:</label>
-          <input v-model.trim="bankModel.name" id="name" class="bp-input" type="text" autofocus required
+          <input class="bp-input" v-model.trim="bankModel.name" id="name" type="text" autofocus required
             placeholder="Bank name..." />
           <div class="bp-required">Name field is required</div>
         </div>
@@ -82,20 +82,21 @@
 
 
 <script setup lang="ts">
-import { reactive, onBeforeMount, onMounted, ref } from 'vue'
+
+import { reactive, onBeforeMount, ref } from 'vue'
 import { Trash2, Edit } from 'lucide-vue-next'
 import http from "../../common/http-common.ts"
 
+
+// Used to build grid
+// <!-- Grid
 const banks = ref([])
 onBeforeMount(() => {
   browseList()
 })
+// --> Grid
 
-onMounted(() => {
-  console.log('onMounted called')
-})
-
-async function browseList() {
+const browseList = async () => {
   await http.get("/bank")
     .then(response => {
       banks.value = response.data.data
@@ -112,7 +113,7 @@ const bankModel = reactive({
   account: '',
 })
 
-async function saveBank() {
+const saveBank = async () => {
   await http.post("/bank", bankModel)
     .then((response) => {
       console.log(response.data)
@@ -126,7 +127,7 @@ async function saveBank() {
     })
 }
 
-async function deleteBank(id: BigInt) {
+const deleteBank = async (id: BigInt) => {
   await http.delete(`/bank/${id}`)
     .then(() => {
       browseList()
@@ -136,7 +137,7 @@ async function deleteBank(id: BigInt) {
     })
 }
 
-async function editBank(id: BigInt) {
+const editBank = async (id: BigInt) => {
   await http.get(`/bank/${id}`)
     .then((response) => {
       // bankModel.value = response.data.data
