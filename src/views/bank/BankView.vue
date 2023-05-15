@@ -47,9 +47,9 @@
           <div>{{ bank['name'] }}</div>
           <div>{{ bank['agency'] }}</div>
           <div>{{ bank['account'] }}</div>
-          <div class="flex p-1">
-            <Trash2 @click="deleteBank(bank['id'])" />
-            <Edit @click="editBank(bank['id'])" />
+          <div class="flex gap-4">
+            <Trash2 class="" color="red" @click="deleteBank(bank['id'])" />
+            <Edit color="green" @click="editBank(bank['id'])" />
           </div>
         </div>
       </div>
@@ -96,15 +96,13 @@ onMounted(() => {
 })
 
 async function browseList() {
-  try {
-    await http.get("/bank")
-      .then(response => {
-        banks.value = response.data.data
-      })
-  } catch (error) {
-    console.log(error)
-  }
-
+  await http.get("/bank")
+    .then(response => {
+      banks.value = response.data.data
+    })
+    .catch((error) => {
+      console.log(error)
+    })
 }
 
 const bankModel = reactive({
@@ -123,20 +121,29 @@ async function saveBank() {
       bankModel.agency = ""
       bankModel.account = ""
     })
+    .catch((error) => {
+      console.log(error)
+    })
 }
 
-async function deleteBank(id) {
+async function deleteBank(id: BigInt) {
   await http.delete(`/bank/${id}`)
     .then(() => {
       browseList()
     })
+    .catch((error) => {
+      console.log(error)
+    })
 }
 
-async function editBank(id) {
+async function editBank(id: BigInt) {
   await http.get(`/bank/${id}`)
     .then((response) => {
-      bankModel.value = response.data.data
-
+      // bankModel.value = response.data.data
+      console.log(response.data)
+    })
+    .catch((error) => {
+      console.log(error)
     })
 }
 
