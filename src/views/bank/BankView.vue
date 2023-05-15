@@ -36,6 +36,31 @@
 
     <!-- Grid Cell -->
     <div class="bp-section">
+      <table class="table-auto bg-white w-full">
+        <thead>
+          <tr>
+            <th>Bank</th>
+            <th>Agency</th>
+            <th>Account</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody class="w-full">
+          <tr class="bg-slate-600" v-for="(bank, index) in banks" :key="index">
+            <td>{{ bank['name'] }}</td>
+            <td>{{ bank['agency'] }}</td>
+            <td>{{ bank['account'] }}</td>
+            <td class="flex gap-2">
+              <Trash2 class="" color="red" @click="deleteBank(bank['id'])" />
+              <Edit color="green" @click="editBank(bank['id'])" />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 
+    <div class="bp-section">
       <div class="grid grid-cols-4 gap-x-4 gap-y-4 bp-grid-font-head items-center justify-center">
         <div>Bank</div>
         <div>Agency</div>
@@ -54,9 +79,9 @@
         </div>
       </div>
     </div>
+    -->
   </div>
 </template>
-
 
 <script setup lang="ts">
 
@@ -65,12 +90,6 @@ import { Trash2, Edit } from 'lucide-vue-next'
 import http from "../../common/http-common.ts"
 
 let bankModel = ref({})
-// const bankModel = reactive({
-//   id: 0,
-//   name: '',
-//   agency: '',
-//   account: '',
-// })
 
 // Used to build grid
 // <!-- Grid
