@@ -48,7 +48,7 @@
           <div>{{ bank['agency'] }}</div>
           <div>{{ bank['account'] }}</div>
           <div class="flex p-1">
-            <Trash2 />
+            <Trash2 @click="deleteBank(bank['id'])" />
             <Trash2 />
             <Trash2 />
             <Trash2 />
@@ -93,7 +93,6 @@ onBeforeMount(() => {
   browseList()
 })
 
-
 onMounted(() => {
   console.log('onMounted called')
 })
@@ -127,6 +126,15 @@ async function saveBank() {
       bankModel.account = ""
     })
 }
+
+async function deleteBank(id) {
+  await http.delete(`/bank/${id}`)
+    .then(() => {
+      browseList()
+    })
+}
+
 </script>
+
 
 <style scoped lang="postcss"></style>
