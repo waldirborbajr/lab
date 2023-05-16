@@ -30,7 +30,7 @@
       <div class="bp-div-three-button">
         <button class="bp-button bp-bt-new">New</button>
         <button class="bp-button bp-bt-cancel">Cancel</button>
-        <button @click="saveBank" type="button" class="bp-button bp-bt-save">Save</button>
+        <button @click="saveBank" :disabled='isComplete' type="button" class="bp-button bp-bt-save">Save</button>
       </div>
     </div>
 
@@ -38,7 +38,7 @@
     <div class="bp-section">
       <table class="table-auto table-striped  bg-white w-full border-collapse: collpase">
         <thead class="bg-slate-700 text-slate-300 ">
-          <tr>
+          <tr class="align-left items-left">
             <th>Bank</th>
             <th>Agency</th>
             <th>Account</th>
@@ -50,7 +50,7 @@
             <td>{{ bank['name'] }}</td>
             <td>{{ bank['agency'] }}</td>
             <td>{{ bank['account'] }}</td>
-            <td class="flex gap-2">
+            <td class="flex gap-4 p-2">
               <Trash2 class="transition ease-in-out duration-200 hover:scale-125" color="red"
                 @click="deleteBank(bank['id'])" />
               <Edit class="transition ease-in-out duration-200 hover:scale-125" color="green"
@@ -92,6 +92,7 @@ import { Trash2, Edit } from 'lucide-vue-next'
 import http from "../../common/http-common.ts"
 
 let bankModel = ref({})
+let isComplete: boolean
 
 // Used to build grid
 // <!-- Grid
@@ -102,8 +103,13 @@ onBeforeMount(async () => {
 // --> Grid
 
 onMounted(() => {
+  isComplete = true
   bankModel.value = {}
 })
+
+// let isComplete = computed(() => {
+//   return (!bankModel.name || !bankModel.agency || !bankModel.account)
+// })
 
 const browseList = async () => {
   await http.get("/bank")
