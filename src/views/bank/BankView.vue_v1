@@ -1,0 +1,218 @@
+<template>
+  <!-- MAIN GRID WITH TWO COLUMNS -->
+  <div class="grid grid-cols-2 gap-1 mx-auto">
+    <!-- Form Cell -->
+    <div class="bp-section">
+      <h2 class="bp-form-label">Bank Form</h2>
+      <form @submit.prevent="onSubmit">
+        <div>
+          <div class="bp-field-div">
+            <label class="bp-label" for="name">Bank:</label>
+            <input
+              class="bp-input"
+              v-model.trim="bankModel.name"
+              id="name"
+              type="text"
+              autofocus
+              required
+              placeholder="Bank name..."
+            />
+            <div class="invalid-feedback">Please provide bank name</div>
+          </div>
+          <div class="bp-field-div">
+            <label class="bp-label" for="agency">Agency:</label>
+            <input
+              v-model.trim="bankModel.agency"
+              id="agency"
+              class="bp-input"
+              type="text"
+              autofocus
+              required
+              placeholder="Agency number..."
+            />
+            <div class="invalid-feedback">Please provide bank agency number</div>
+          </div>
+          <div class="bp-field-div">
+            <label class="bp-label" for="account">Account:</label>
+            <input
+              v-model.trim="bankModel.account"
+              id="account"
+              class="bp-input"
+              type="text"
+              autofocus
+              required
+              placeholder="Account number..."
+            />
+            <div class="invalid-feedback">Please provide bank count number</div>
+          </div>
+        </div>
+
+        <!-- BUTTONS -->
+        <div class="bp-div-three-button">
+          <button class="bp-button bp-bt-new">New</button>
+          <button class="bp-button bp-bt-cancel">Cancel</button>
+          <button :disabled="isComplete" type="submit" class="bp-button bp-bt-save">Save</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Grid Cell -->
+    <div class="bp-section">
+      <table class="w-full bg-white table-auto table-striped border-collapse: collpase">
+        <thead class="bg-slate-700 text-slate-300">
+          <tr class="align-left items-left">
+            <th>Bank</th>
+            <th>Agency</th>
+            <th>Account</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody class="w-full">
+          <tr v-for="(bank, index) in banks" :key="index">
+            <td>{{ bank['name'] }}</td>
+            <td>{{ bank['agency'] }}</td>
+            <td>{{ bank['account'] }}</td>
+            <td class="flex gap-4 p-2">
+              <Trash2
+                class="transition duration-200 ease-in-out hover:scale-125"
+                color="red"
+                @click="deleteBank(bank['id'])"
+              />
+              <Edit
+                class="transition duration-200 ease-in-out hover:scale-125"
+                color="green"
+                @click="editBank(bank['id'])"
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 
+    <div class="bp-section">
+      <div class="grid grid-cols-4 gap-x-4 gap-y-4 justify-center items-center bp-grid-font-head">
+        <div>Bank</div>
+        <div>Agency</div>
+        <div>Account</div>
+        <div>Action</div>
+      </div>
+      <div v-for="(bank, index) in banks" :key="index">
+        <div class="grid grid-cols-4 gap-x-4 gap-y-4 text-sm font-nro">
+          <div>{{ bank['name'] }}</div>
+          <div>{{ bank['agency'] }}</div>
+          <div>{{ bank['account'] }}</div>
+          <div class="flex gap-4">
+            <Trash2 class="" color="red" @click="deleteBank(bank['id'])" />
+            <Edit color="green" @click="editBank(bank['id'])" />
+          </div>
+        </div>
+      </div>
+    </div>
+    -->
+  </div>
+</template>
+
+<script setup lang="ts">
+import { onBeforeMount, ref, onMounted } from 'vue'
+import { Trash2, Edit } from 'lucide-vue-next'
+// import useVuelidate from '@vuelidate/core'
+// import {
+//   required,
+//   email,
+//   sameAs,
+//   between,
+//   minValue,
+//   maxValue,
+//   alpha,
+//   numeric,
+//   helpers
+// } from '@vuelidate/validators'
+import http from '../../common/http-common.ts'
+
+let bankModel = ref({})
+let isComplete: boolean
+
+// Used to build grid
+// <!-- Grid
+const banks = ref([])
+onBeforeMount(async () => {
+  await browseList()
+})
+// --> Grid
+
+onMounted(() => {
+  isComplete = true
+  bankModel.value = {}
+})
+
+// let isComplete = computed(() => {
+//   return (!bankModel.name || !bankModel.agency || !bankModel.account)
+// })
+
+const browseList = async () => {
+  await http
+    .get('/bank')
+    .then((response) => {
+      banks.value = response.data.data
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+}
+
+const onSubmit = async () => {
+  console.log(bankModel.value.id)
+  if (bankModel.value.id === null || bankModel.value.id === undefined) {
+    // New bank
+    await http
+      .post('/bank', bankModel.value)
+      .then((response) => {
+        console.log(response.data)
+        browseList()
+        bankModel.value = {}
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  } else {
+    // Update bank
+    await http
+      .put(`/bank/${bankModel.value.id}`, bankModel.value)
+      .then((response) => {
+        console.log(response.data)
+        browseList()
+        bankModel.value = {}
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }
+}
+
+const deleteBank = async (id: BigInt) => {
+  await http
+    .delete(`/bank/${id}`)
+    .then(() => {
+      browseList()
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+}
+
+const editBank = async (id: BigInt) => {
+  await http
+    .get(`/bank/${id}`)
+    .then((response) => {
+      // bankModel.value = response.data.data
+      console.log(response.data)
+      bankModel.value = { ...response.data.data }
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+}
+</script>
+
+<style scoped lang="postcss"></style>

@@ -1,43 +1,45 @@
 <template>
   <!-- MAIN GRID WITH TWO COLUMNS -->
-  <div class="grid grid-cols-2 gap-1  mx-auto">
-
+  <div class="grid grid-cols-2 gap-1 mx-auto">
     <!-- Form Cell -->
     <div class="bp-section">
       <h2 class="bp-form-label">Bank Form</h2>
+      <!--      <form @submit.prevent="onSubmit"> -->
       <div>
         <div class="bp-field-div">
           <label class="bp-label" for="name">Bank:</label>
           <input class="bp-input" v-model.trim="bankModel.name" id="name" type="text" autofocus required
             placeholder="Bank name..." />
-          <div class="bp-required">Name field is required</div>
+          <div class="invalid-feedback">Please provide bank name</div>
         </div>
         <div class="bp-field-div">
           <label class="bp-label" for="agency">Agency:</label>
           <input v-model.trim="bankModel.agency" id="agency" class="bp-input" type="text" autofocus required
             placeholder="Agency number..." />
-          <div class="bp-required">Name field is required</div>
+          <div class="invalid-feedback">Please provide bank agency number</div>
         </div>
         <div class="bp-field-div">
           <label class="bp-label" for="account">Account:</label>
           <input v-model.trim="bankModel.account" id="account" class="bp-input" type="text" autofocus required
             placeholder="Account number..." />
-          <div class="bp-required">Name field is required</div>
+          <div class="invalid-feedback">Please provide bank count number</div>
         </div>
       </div>
 
       <!-- BUTTONS -->
       <div class="bp-div-three-button">
+        <BPButton class="bp-button bp-bt-new" text="Click" @buttonClicked="showAlert" />
         <button class="bp-button bp-bt-new">New</button>
         <button class="bp-button bp-bt-cancel">Cancel</button>
-        <button @click="saveBank" :disabled='isComplete' type="button" class="bp-button bp-bt-save">Save</button>
+        <button :disabled="isComplete" type="button" class="bp-button bp-bt-save">Save</button>
       </div>
+      <!---      </form> -->
     </div>
 
     <!-- Grid Cell -->
     <div class="bp-section">
-      <table class="table-auto table-striped  bg-white w-full border-collapse: collpase">
-        <thead class="bg-slate-700 text-slate-300 ">
+      <table class="w-full bg-white table-auto table-striped border-collapse: collpase">
+        <thead class="bg-slate-700 text-slate-300">
           <tr class="align-left items-left">
             <th>Bank</th>
             <th>Agency</th>
@@ -51,45 +53,23 @@
             <td>{{ bank['agency'] }}</td>
             <td>{{ bank['account'] }}</td>
             <td class="flex gap-4 p-2">
-              <Trash2 class="transition ease-in-out duration-200 hover:scale-125" color="red"
+              <Trash2 class="transition duration-200 ease-in-out hover:scale-125" color="red"
                 @click="deleteBank(bank['id'])" />
-              <Edit class="transition ease-in-out duration-200 hover:scale-125" color="green"
+              <Edit class="transition duration-200 ease-in-out hover:scale-125" color="green"
                 @click="editBank(bank['id'])" />
             </td>
           </tr>
         </tbody>
       </table>
     </div>
-
-    <!-- 
-    <div class="bp-section">
-      <div class="grid grid-cols-4 gap-x-4 gap-y-4 bp-grid-font-head items-center justify-center">
-        <div>Bank</div>
-        <div>Agency</div>
-        <div>Account</div>
-        <div>Action</div>
-      </div>
-      <div v-for="(bank, index) in banks" :key="index">
-        <div class="grid grid-cols-4 gap-x-4 gap-y-4 font-nro text-sm ">
-          <div>{{ bank['name'] }}</div>
-          <div>{{ bank['agency'] }}</div>
-          <div>{{ bank['account'] }}</div>
-          <div class="flex gap-4">
-            <Trash2 class="" color="red" @click="deleteBank(bank['id'])" />
-            <Edit color="green" @click="editBank(bank['id'])" />
-          </div>
-        </div>
-      </div>
-    </div>
-    -->
   </div>
 </template>
 
 <script setup lang="ts">
-
 import { onBeforeMount, ref, onMounted } from 'vue'
 import { Trash2, Edit } from 'lucide-vue-next'
-import http from "../../common/http-common.ts"
+import BPButton from '../../components/button/BPButton.vue'
+import http from '../../common/http-common.ts'
 
 let bankModel = ref({})
 let isComplete: boolean
@@ -112,8 +92,9 @@ onMounted(() => {
 // })
 
 const browseList = async () => {
-  await http.get("/bank")
-    .then(response => {
+  await http
+    .get('/bank')
+    .then((response) => {
       banks.value = response.data.data
     })
     .catch((error) => {
@@ -121,11 +102,15 @@ const browseList = async () => {
     })
 }
 
-const saveBank = async () => {
-  console.log(bankModel.value.id)
+const showAlert = () => {
+  alert('BPButton Clicked')
+}
+
+const onSubmit = async () => {
   if (bankModel.value.id === null || bankModel.value.id === undefined) {
     // New bank
-    await http.post("/bank", bankModel.value)
+    await http
+      .post('/bank', bankModel.value)
       .then((response) => {
         console.log(response.data)
         browseList()
@@ -134,10 +119,10 @@ const saveBank = async () => {
       .catch((error) => {
         console.log(error)
       })
-
   } else {
     // Update bank
-    await http.put(`/bank/${bankModel.value.id}`, bankModel.value)
+    await http
+      .put(`/bank/${bankModel.value.id}`, bankModel.value)
       .then((response) => {
         console.log(response.data)
         browseList()
@@ -150,7 +135,8 @@ const saveBank = async () => {
 }
 
 const deleteBank = async (id: BigInt) => {
-  await http.delete(`/bank/${id}`)
+  await http
+    .delete(`/bank/${id}`)
     .then(() => {
       browseList()
     })
@@ -160,7 +146,8 @@ const deleteBank = async (id: BigInt) => {
 }
 
 const editBank = async (id: BigInt) => {
-  await http.get(`/bank/${id}`)
+  await http
+    .get(`/bank/${id}`)
     .then((response) => {
       // bankModel.value = response.data.data
       console.log(response.data)
@@ -170,7 +157,6 @@ const editBank = async (id: BigInt) => {
       console.log(error)
     })
 }
-
 </script>
 
 <style scoped lang="postcss"></style>
