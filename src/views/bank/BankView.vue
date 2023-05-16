@@ -4,11 +4,11 @@
     <!-- Form Cell -->
     <div class="bp-section">
       <h2 class="bp-form-label">Bank Form</h2>
-      <form action="submit">
+      <form @submit.prevent="onSubmitClick">
         <div>
           <div class="bp-field-div">
             <label class="bp-label" for="name">Bank:</label>
-            <input class="bp-input" v-model.trim="data.name" id="name" type="text" autofocus required
+            <input class="bp-input" v-model.trim="bank.name" id="name" type="text" autofocus required
               placeholder="Bank name..." />
             <div class="text-sm font-semibold text-red-700" v-for="error of v$.name.$errors" :key="error.$uid">
               <div class="error-msg">{{ error.$message }}</div>
@@ -16,7 +16,7 @@
           </div>
           <div class="bp-field-div">
             <label class="bp-label" for="agency">Agency:</label>
-            <input v-model.trim="data.agency" id="agency" class="bp-input" type="text" autofocus required
+            <input v-model.trim="bank.agency" id="agency" class="bp-input" type="text" autofocus required
               placeholder="Agency number..." />
             <div class="text-sm font-semibold text-red-700" v-if="v$?.agency?.$dirty && v$?.agency?.$error">
               Please, Bank Agency Code it is required
@@ -24,7 +24,7 @@
           </div>
           <div class="bp-field-div">
             <label class="bp-label" for="account">Account:</label>
-            <input v-model.trim="data.account" id="account" class="bp-input" type="text" autofocus required
+            <input v-model.trim="bank.account" id="account" class="bp-input" type="text" autofocus required
               placeholder="Account number..." />
             <div class="text-sm font-semibold text-red-700" v-if="v$?.account?.$dirty && v$?.account?.$error">
               Please, Bank Account Number it is required
@@ -37,14 +37,14 @@
           <!-- <BPButton class="bp-button bp-bt-new" text="Click" @buttonClicked="showAlert" /> -->
           <button class="bp-button bp-bt-new" @click="onNewClick">New</button>
           <button class="bp-button bp-bt-cancel" @click="onNewClick">Cancel</button>
-          <button class="bp-button bp-bt-save" @click="onSubmitClick" type="submit">Save</button>
+          <button class="bp-button bp-bt-save" type="submit">Save</button>
         </div>
       </form>
     </div>
 
     <!-- Grid Cell -->
     <div class="bp-section">
-      <div class="align-middle" v-show="data.loading">
+      <div class="align-middle" v-show="bank.loading">
         <Loader class="flex animate-bounce ext-green-600" size="64" stroke-width="4" />
         Please wait, loading data...
       </div>
@@ -58,7 +58,7 @@
           </tr>
         </thead>
         <tbody class="w-full">
-          <tr v-for="(bank, index) in data.banks" :key="index">
+          <tr v-for="(bank, index) in bank.banks" :key="index">
             <td>{{ bank['name'] }}</td>
             <td>{{ bank['agency'] }}</td>
             <td>{{ bank['account'] }}</td>
@@ -90,13 +90,14 @@ onBeforeMount(async () => {
 })
 // --> Grido
 
-let data = reactive({
+let bank = reactive({
   banks: [],
   id: null,
   name: '',
   agency: '',
   account: '',
-  loading: false
+  loading: false,
+  state: false
 })
 
 const validations = {
@@ -105,26 +106,26 @@ const validations = {
   account: { required, integer, minLength: minLength(2) }
 }
 
-const v$ = useVuelidate(validations, data)
+const v$ = useVuelidate(validations, bank)
 
 const clearFiel = () => {
-  data.id = null
-  data.name = ''
-  data.agency = ''
-  data.account = ''
+  bank.id = null
+  bank.name = ''
+  bank.agency = ''
+  bank.account = ''
 }
 
 onMounted(() => {
-  clearFiel()
+  // clearFiel()
 })
 
 const browseList = async () => {
-  data.loading = true
+  bank.loading = true
   await http
     .get('/bank')
     .then((response) => {
-      data.banks = response.data.data
-      data.loading = false
+      bank.banks = response.data.data
+      bank.loading = false
     })
     .catch((error) => {
       console.log(error)
@@ -140,11 +141,11 @@ const onNewClick = () => {
 }
 
 const onSubmitClick = async () => {
-  console.log(data)
-  if (data.id === null || data.id === undefined) {
+  console.log(bank)
+  if (bank.id === null || bank.id === undefined) {
     // New bank
     await http
-      .post('/bank', data)
+      .post('/bank', bank)
       .then((response) => {
         console.log(response.data)
         browseList()
@@ -156,7 +157,7 @@ const onSubmitClick = async () => {
   } else {
     // Update bank
     await http
-      .put(`/bank/${data.id}`, data)
+      .put(`/bank/${bank.id}`, bank)
       .then((response) => {
         console.log(response.data)
         browseList()
@@ -183,8 +184,8 @@ const editBank = async (id: BigInt) => {
     .get(`/bank/${id}`)
     .then((response) => {
       // bankModel.value = response.data.data
-      console.log(response.data)
-      data = response.data.data
+      console.log(response.data.data)
+      bank = { ...response.data.data }
     })
     .catch((error) => {
       console.log(error)
