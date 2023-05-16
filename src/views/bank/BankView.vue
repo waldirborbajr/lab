@@ -8,30 +8,53 @@
       <div>
         <div class="bp-field-div">
           <label class="bp-label" for="name">Bank:</label>
-          <input class="bp-input" v-model.trim="bankModel.name" id="name" type="text" autofocus required
-            placeholder="Bank name..." />
-          <div class="invalid-feedback">Please provide bank name</div>
+          <input
+            class="bp-input"
+            v-model.trim="data.name"
+            id="name"
+            type="text"
+            autofocus
+            required
+            placeholder="Bank name..."
+          />
+          <div class="text-sm font-semibold text-red-700">Please provide bank name</div>
         </div>
         <div class="bp-field-div">
           <label class="bp-label" for="agency">Agency:</label>
-          <input v-model.trim="bankModel.agency" id="agency" class="bp-input" type="text" autofocus required
-            placeholder="Agency number..." />
-          <div class="invalid-feedback">Please provide bank agency number</div>
+          <input
+            v-model.trim="data.agency"
+            id="agency"
+            class="bp-input"
+            type="text"
+            autofocus
+            required
+            placeholder="Agency number..."
+          />
+          <div class="text-sm font-semibold text-red-700">Please provide bank agency number</div>
         </div>
         <div class="bp-field-div">
           <label class="bp-label" for="account">Account:</label>
-          <input v-model.trim="bankModel.account" id="account" class="bp-input" type="text" autofocus required
-            placeholder="Account number..." />
-          <div class="invalid-feedback">Please provide bank count number</div>
+          <input
+            v-model.trim="data.account"
+            id="account"
+            class="bp-input"
+            type="text"
+            autofocus
+            required
+            placeholder="Account number..."
+          />
+          <div class="text-sm font-semibold text-red-700">Please provide bank count number</div>
         </div>
       </div>
 
       <!-- BUTTONS -->
       <div class="bp-div-three-button">
-        <BPButton class="bp-button bp-bt-new" text="Click" @buttonClicked="showAlert" />
+        <!-- <BPButton class="bp-button bp-bt-new" text="Click" @buttonClicked="showAlert" /> -->
         <button class="bp-button bp-bt-new">New</button>
-        <button class="bp-button bp-bt-cancel">Cancel</button>
-        <button :disabled="isComplete" type="button" class="bp-button bp-bt-save">Save</button>
+        <button class="bp-button bp-bt-cancel" @click="onNewClick">Cancel</button>
+        <button :disabled="isComplete" class="bp-button bp-bt-save" @click="onSubmitClick">
+          Save
+        </button>
       </div>
       <!---      </form> -->
     </div>
@@ -48,15 +71,21 @@
           </tr>
         </thead>
         <tbody class="w-full">
-          <tr v-for="(bank, index) in banks" :key="index">
+          <tr v-for="(bank, index) in data.banks" :key="index">
             <td>{{ bank['name'] }}</td>
             <td>{{ bank['agency'] }}</td>
             <td>{{ bank['account'] }}</td>
             <td class="flex gap-4 p-2">
-              <Trash2 class="transition duration-200 ease-in-out hover:scale-125" color="red"
-                @click="deleteBank(bank['id'])" />
-              <Edit class="transition duration-200 ease-in-out hover:scale-125" color="green"
-                @click="editBank(bank['id'])" />
+              <Trash2
+                class="transition duration-200 ease-in-out hover:scale-125"
+                color="red"
+                @click="deleteBank(bank['id'])"
+              />
+              <Edit
+                class="transition duration-200 ease-in-out hover:scale-125"
+                color="green"
+                @click="editBank(bank['id'])"
+              />
             </td>
           </tr>
         </tbody>
@@ -66,55 +95,69 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeMount, ref, onMounted } from 'vue'
+import { onBeforeMount, reactive, onMounted } from 'vue'
 import { Trash2, Edit } from 'lucide-vue-next'
-import BPButton from '../../components/button/BPButton.vue'
+// import BPButton from '../../components/button/BPButton.vue'
 import http from '../../common/http-common.ts'
 
-let bankModel = ref({})
 let isComplete: boolean
 
 // Used to build grid
 // <!-- Grid
-const banks = ref([])
 onBeforeMount(async () => {
   await browseList()
 })
 // --> Grid
 
-onMounted(() => {
-  isComplete = true
-  bankModel.value = {}
+let data = reactive({
+  banks: [],
+  id: null,
+  name: '',
+  agency: '',
+  account: ''
 })
 
-// let isComplete = computed(() => {
-//   return (!bankModel.name || !bankModel.agency || !bankModel.account)
-// })
+const clearFiel = () => {
+  data.id = null
+  data.name = ''
+  data.agency = ''
+  data.account = ''
+}
+
+onMounted(() => {
+  isComplete = true
+  clearFiel()
+})
 
 const browseList = async () => {
   await http
     .get('/bank')
     .then((response) => {
-      banks.value = response.data.data
+      data.banks = response.data.data
     })
     .catch((error) => {
       console.log(error)
     })
 }
 
-const showAlert = () => {
-  alert('BPButton Clicked')
+// const showAlert = () => {
+//   alert('BPButton Clicked')
+// }
+
+const onNewClick = () => {
+  clearFiel()
 }
 
-const onSubmit = async () => {
-  if (bankModel.value.id === null || bankModel.value.id === undefined) {
+const onSubmitClick = async () => {
+  console.log(data)
+  if (data.id === null || data.id === undefined) {
     // New bank
     await http
-      .post('/bank', bankModel.value)
+      .post('/bank', data)
       .then((response) => {
         console.log(response.data)
         browseList()
-        bankModel.value = {}
+        clearFiel()
       })
       .catch((error) => {
         console.log(error)
@@ -122,11 +165,10 @@ const onSubmit = async () => {
   } else {
     // Update bank
     await http
-      .put(`/bank/${bankModel.value.id}`, bankModel.value)
+      .put(`/bank/${data.id}`, data)
       .then((response) => {
         console.log(response.data)
         browseList()
-        bankModel.value = {}
       })
       .catch((error) => {
         console.log(error)
@@ -151,12 +193,10 @@ const editBank = async (id: BigInt) => {
     .then((response) => {
       // bankModel.value = response.data.data
       console.log(response.data)
-      bankModel.value = { ...response.data.data }
+      data = { ...response.data.data }
     })
     .catch((error) => {
       console.log(error)
     })
 }
 </script>
-
-<style scoped lang="postcss"></style>

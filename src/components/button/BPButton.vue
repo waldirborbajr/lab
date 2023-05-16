@@ -1,5 +1,6 @@
 <template>
-  <button @click="$emit('buttonClicked')">{{ props.text }}</button>
+  <button @click="handleButtonClicked">{{ props.text }}</button>
+  <!-- <button @click="$emit('buttonClicked')">{{ props.text }}</button> -->
 </template>
 
 <script setup lang="ts">
@@ -11,4 +12,8 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['buttonClicked'])
+
+const handleButtonClicked = () => {
+  emit('buttonClicked')
+}
 </script>
