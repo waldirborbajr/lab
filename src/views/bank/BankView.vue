@@ -8,41 +8,20 @@
       <div>
         <div class="bp-field-div">
           <label class="bp-label" for="name">Bank:</label>
-          <input
-            class="bp-input"
-            v-model.trim="data.name"
-            id="name"
-            type="text"
-            autofocus
-            required
-            placeholder="Bank name..."
-          />
+          <input class="bp-input" v-model.trim="data.name" id="name" type="text" autofocus required
+            placeholder="Bank name..." />
           <div class="text-sm font-semibold text-red-700">Please provide bank name</div>
         </div>
         <div class="bp-field-div">
           <label class="bp-label" for="agency">Agency:</label>
-          <input
-            v-model.trim="data.agency"
-            id="agency"
-            class="bp-input"
-            type="text"
-            autofocus
-            required
-            placeholder="Agency number..."
-          />
+          <input v-model.trim="data.agency" id="agency" class="bp-input" type="text" autofocus required
+            placeholder="Agency number..." />
           <div class="text-sm font-semibold text-red-700">Please provide bank agency number</div>
         </div>
         <div class="bp-field-div">
           <label class="bp-label" for="account">Account:</label>
-          <input
-            v-model.trim="data.account"
-            id="account"
-            class="bp-input"
-            type="text"
-            autofocus
-            required
-            placeholder="Account number..."
-          />
+          <input v-model.trim="data.account" id="account" class="bp-input" type="text" autofocus required
+            placeholder="Account number..." />
           <div class="text-sm font-semibold text-red-700">Please provide bank count number</div>
         </div>
       </div>
@@ -50,7 +29,7 @@
       <!-- BUTTONS -->
       <div class="bp-div-three-button">
         <!-- <BPButton class="bp-button bp-bt-new" text="Click" @buttonClicked="showAlert" /> -->
-        <button class="bp-button bp-bt-new">New</button>
+        <button class="bp-button bp-bt-new" @click="onNewClick">New</button>
         <button class="bp-button bp-bt-cancel" @click="onNewClick">Cancel</button>
         <button class="bp-button bp-bt-save" @click="onSubmitClick">Save</button>
       </div>
@@ -74,16 +53,10 @@
             <td>{{ bank['agency'] }}</td>
             <td>{{ bank['account'] }}</td>
             <td class="flex gap-4 p-2">
-              <Trash2
-                class="transition duration-200 ease-in-out hover:scale-125"
-                color="red"
-                @click="deleteBank(bank['id'])"
-              />
-              <Edit
-                class="transition duration-200 ease-in-out hover:scale-125"
-                color="green"
-                @click="editBank(bank['id'])"
-              />
+              <Trash2 class="transition duration-200 ease-in-out hover:scale-125" color="red"
+                @click="deleteBank(bank['id'])" />
+              <Edit class="transition duration-200 ease-in-out hover:scale-125" color="green"
+                @click="editBank(bank['id'])" />
             </td>
           </tr>
         </tbody>
@@ -97,8 +70,6 @@ import { onBeforeMount, reactive, onMounted } from 'vue'
 import { Trash2, Edit } from 'lucide-vue-next'
 // import BPButton from '../../components/button/BPButton.vue'
 import http from '../../common/http-common.ts'
-
-let isComplete: boolean
 
 // Used to build grid
 // <!-- Grid
@@ -123,7 +94,6 @@ const clearFiel = () => {
 }
 
 onMounted(() => {
-  isComplete = true
   clearFiel()
 })
 
@@ -143,6 +113,7 @@ const browseList = async () => {
 // }
 
 const onNewClick = () => {
+  console.log('onNewClick')
   clearFiel()
 }
 
