@@ -76,7 +76,7 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeMount, reactive, onMounted } from 'vue'
+import { onBeforeMount, reactive } from 'vue'
 import { Trash2, Edit, Loader } from 'lucide-vue-next'
 // import BPButton from '../../components/button/BPButton.vue'
 import { required, integer, minLength } from '@vuelidate/validators'
@@ -90,7 +90,7 @@ onBeforeMount(async () => {
 })
 // --> Grido
 
-let bank = reactive({
+const bank = reactive({
   banks: [],
   id: null,
   name: '',
@@ -114,10 +114,6 @@ const clearFiel = () => {
   bank.agency = ''
   bank.account = ''
 }
-
-onMounted(() => {
-  // clearFiel()
-})
 
 const browseList = async () => {
   bank.loading = true
@@ -146,8 +142,7 @@ const onSubmitClick = async () => {
     // New bank
     await http
       .post('/bank', bank)
-      .then((response) => {
-        console.log(response.data)
+      .then(() => {
         browseList()
         clearFiel()
       })
@@ -158,8 +153,7 @@ const onSubmitClick = async () => {
     // Update bank
     await http
       .put(`/bank/${bank.id}`, bank)
-      .then((response) => {
-        console.log(response.data)
+      .then(() => {
         browseList()
       })
       .catch((error) => {
@@ -184,8 +178,12 @@ const editBank = async (id: BigInt) => {
     .get(`/bank/${id}`)
     .then((response) => {
       // bankModel.value = response.data.data
-      console.log(response.data.data)
-      bank = { ...response.data.data }
+      console.log(response.data)
+      bank.id = response.data.data.id
+      bank.name = response.data.data.name
+      bank.agency = response.data.data.agency
+      bank.account = response.data.data.account
+      // = { ...response.data }
     })
     .catch((error) => {
       console.log(error)
