@@ -10,8 +10,8 @@
             <label class="bp-label" for="name">Bank:</label>
             <input class="bp-input" v-model.trim="data.name" id="name" type="text" autofocus required
               placeholder="Bank name..." />
-            <div class="text-sm font-semibold text-red-700" v-if="v$?.name?.$dirty && v$?.name?.$error">
-              Please, Bank Name it is required
+            <div class="text-sm font-semibold text-red-700" v-for="error of v$.name.$errors" :key="error.$uid">
+              <div class="error-msg">{{ error.$message }}</div>
             </div>
           </div>
           <div class="bp-field-div">
@@ -99,13 +99,13 @@ let data = reactive({
   loading: false
 })
 
-const rules = {
+const validations = {
   name: { required },
   agency: { required, integer, minLength: minLength(2) },
   account: { required, integer, minLength: minLength(2) }
 }
 
-const v$ = useVuelidate(rules, data)
+const v$ = useVuelidate(validations, data)
 
 const clearFiel = () => {
   data.id = null
