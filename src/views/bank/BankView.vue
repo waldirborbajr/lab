@@ -44,11 +44,9 @@
 
     <!-- Grid Cell -->
     <div class="bp-section">
-      <div>
-        <button type="button" class="bg-indigo-500 bp-button" disabled v-show="data.loading">
-          <svg class="mr-3 w-5 h-5 animate-spin" viewBox="0 0 24 24"></svg>
-          Loading data...
-        </button>
+      <div class="align-middle" v-show="data.loading">
+        <Loader class="flex animate-bounce ext-green-600" size="64" stroke-width="4" />
+        Please wait, loading data...
       </div>
       <table class="w-full bg-white table-auto table-striped border-collapse: collpase">
         <thead class="bg-slate-700 text-slate-300">
@@ -79,7 +77,7 @@
 
 <script setup lang="ts">
 import { onBeforeMount, reactive, onMounted } from 'vue'
-import { Trash2, Edit } from 'lucide-vue-next'
+import { Trash2, Edit, Loader } from 'lucide-vue-next'
 // import BPButton from '../../components/button/BPButton.vue'
 import { required, integer, minLength } from '@vuelidate/validators'
 import { useVuelidate } from '@vuelidate/core'
