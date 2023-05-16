@@ -52,9 +52,7 @@
         <!-- <BPButton class="bp-button bp-bt-new" text="Click" @buttonClicked="showAlert" /> -->
         <button class="bp-button bp-bt-new">New</button>
         <button class="bp-button bp-bt-cancel" @click="onNewClick">Cancel</button>
-        <button :disabled="isComplete" class="bp-button bp-bt-save" @click="onSubmitClick">
-          Save
-        </button>
+        <button class="bp-button bp-bt-save" @click="onSubmitClick">Save</button>
       </div>
       <!---      </form> -->
     </div>
