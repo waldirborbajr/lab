@@ -71,12 +71,10 @@
 import { onBeforeMount, reactive } from 'vue'
 import { Trash2, Edit, Loader } from 'lucide-vue-next'
 import { notify } from '@kyvg/vue3-notification'
-// import { useI18n } from 'vue-i18n'
 // import BPButton from '../../components/button/BPButton.vue'
 import http from '../../common/http-common.ts'
 
 // Contants
-// const { t } = useI18n()
 
 // Used to build grid
 onBeforeMount(async () => {
@@ -124,7 +122,7 @@ const browseList = async () => {
       bank.loading = false
     })
     .catch(
-      (error) => console.error(t('load'))
+      (error) => console.error('ERROR: load', error)
       // notify({
       //   group: 'top-right',
       //   type: 'error',
@@ -155,7 +153,7 @@ const onSubmitClick = async () => {
         clearFiel()
       })
       .catch(
-        (error) => console.error(t('save'))
+        (error) => console.error('ERROR: save', error)
         // notify({
         //   group: 'top-right',
         //   type: 'error',
@@ -173,7 +171,7 @@ const onSubmitClick = async () => {
         clearFiel()
       })
       .catch(
-        (error) => console.error(t('update'))
+        (error) => console.error('ERROR: update', error)
         // notify({
         //   group: 'top-right',
         //   type: 'error',
@@ -191,7 +189,7 @@ const deleteBank = async (id: BigInt) => {
       browseList()
     })
     .catch(
-      (error) => console.error(t('delete'))
+      (error) => console.error('ERROR: delete: ', error)
       // notify({
       //   group: 'top-right',
       //   type: 'error',
@@ -211,20 +209,3 @@ const editBank = async (id: BigInt) => {
     .finally(() => (bank.state = false))
 }
 </script>
-
-<i18n lang="json">
-{
-  "pt-BR": {
-    "load": "Erro carregando dados.",
-    "save": "Erro salvando dados.",
-    "update": "Erro atualizado dados.",
-    "delete": "Erro ao remover dado."
-  },
-  "en-US": {
-    "load": "Error loading data.",
-    "save": "Error saving data.",
-    "update": "Error updating data.",
-    "delete": "Error deleting data."
-  }
-}
-</i18n>
