@@ -96,7 +96,7 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeMount, reactive } from 'vue'
+import { onBeforeMount, reactive, onMounted } from 'vue'
 import { Trash2, Edit, Loader } from 'lucide-vue-next'
 import { notify } from '@kyvg/vue3-notification'
 // import BPButton from '../../components/button/BPButton.vue'
@@ -107,6 +107,10 @@ import http from '../../common/http-common.ts'
 // Used to build grid
 onBeforeMount(async () => {
   await browseList()
+})
+
+onMounted(() => {
+  console.log('mounted')
   notify({
     group: 'top-right',
     type: 'success',
