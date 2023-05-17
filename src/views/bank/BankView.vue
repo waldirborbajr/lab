@@ -8,39 +8,18 @@
         <div>
           <div class="bp-field-div">
             <label class="bp-label" for="name">Bank:</label>
-            <input
-              class="bp-input"
-              v-model.trim="bank.name"
-              id="name"
-              type="text"
-              autofocus
-              required
-              placeholder="Bank name..."
-            />
+            <input class="bp-input" v-model.trim="bank.name" id="name" type="text" autofocus required
+              placeholder="Bank name..." />
           </div>
           <div class="bp-field-div">
             <label class="bp-label" for="agency">Agency:</label>
-            <input
-              v-model.trim="bank.agency"
-              id="agency"
-              class="bp-input"
-              type="text"
-              autofocus
-              required
-              placeholder="Agency number..."
-            />
+            <input v-model.trim="bank.agency" id="agency" class="bp-input" type="text" autofocus required
+              placeholder="Agency number..." />
           </div>
           <div class="bp-field-div">
             <label class="bp-label" for="account">Account:</label>
-            <input
-              v-model.trim="bank.account"
-              id="account"
-              class="bp-input"
-              type="text"
-              autofocus
-              required
-              placeholder="Account number..."
-            />
+            <input v-model.trim="bank.account" id="account" class="bp-input" type="text" autofocus required
+              placeholder="Account number..." />
           </div>
         </div>
 
@@ -75,20 +54,15 @@
             <td>{{ b['agency'] }}</td>
             <td>{{ b['account'] }}</td>
             <td class="flex gap-4 p-2">
-              <Trash2
-                class="transition duration-200 ease-in-out hover:scale-125"
-                color="red"
-                @click="deleteBank(b['id'])"
-              />
-              <Edit
-                class="transition duration-200 ease-in-out hover:scale-125"
-                color="green"
-                @click="editBank(b['id'])"
-              />
+              <Trash2 class="transition duration-200 ease-in-out hover:scale-125" color="red"
+                @click="deleteBank(b['id'])" />
+              <Edit class="transition duration-200 ease-in-out hover:scale-125" color="green"
+                @click="editBank(b['id'])" />
             </td>
           </tr>
         </tbody>
       </table>
+      <div>PAGING</div>
     </div>
   </div>
 </template>
@@ -177,8 +151,8 @@ const onSubmitClick = async () => {
       .then(() => {
         browseList()
 
-        Object.assign(bank, null)
-        // clearFiel()
+        // Object.assign(bank, null)
+        clearFiel()
       })
       .catch(
         (error) => console.error(t('save'))
@@ -195,8 +169,8 @@ const onSubmitClick = async () => {
       .put(`/bank/${bank.id}`, bank)
       .then(() => {
         browseList()
-        Object.assign(bank, null)
-        // clearFiel()
+        // Object.assign(bank, null)
+        clearFiel()
       })
       .catch(
         (error) => console.error(t('update'))
