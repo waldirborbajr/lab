@@ -58,15 +58,15 @@
           </tr>
         </thead>
         <tbody class="w-full">
-          <tr v-for="(bank, index) in bank.banks" :key="index">
-            <td>{{ bank['name'] }}</td>
-            <td>{{ bank['agency'] }}</td>
-            <td>{{ bank['account'] }}</td>
+          <tr v-for="(b, index) in bank.banks" :key="index">
+            <td>{{ b['name'] }}</td>
+            <td>{{ b['agency'] }}</td>
+            <td>{{ b['account'] }}</td>
             <td class="flex gap-4 p-2">
               <Trash2 class="transition duration-200 ease-in-out hover:scale-125" color="red"
-                @click="deleteBank(bank['id'])" />
+                @click="deleteBank(b['id'])" />
               <Edit class="transition duration-200 ease-in-out hover:scale-125" color="green"
-                @click="editBank(bank['id'])" />
+                @click="editBank(b['id'])" />
             </td>
           </tr>
         </tbody>
@@ -126,9 +126,8 @@ const browseList = async () => {
       bank.banks = response.data.data
       bank.loading = false
     })
-    .catch((error) => {
-      console.error('ERROR: acquiring data for grid: ', error)
-    })
+    .catch((error) => console.error('ERROR: acquiring data for grid: ', error))
+    .finally(() => (bank.state = false))
 }
 
 // const showAlert = () => {
@@ -140,7 +139,7 @@ const onNewClick = () => {
 }
 
 const onSubmitClick = async () => {
-  console.log(bank)
+  bank.state = true
   if (bank.id === null || bank.id === undefined) {
     // New bank
     await http
@@ -150,16 +149,17 @@ const onSubmitClick = async () => {
         clearFiel()
       })
       .catch((error) => console.error('ERROR: saving bank: ', error))
+      .finally(() => (bank.state = false))
   } else {
     // Update bank
     await http
       .put(`/bank/${bank.id}`, bank)
       .then(() => {
         browseList()
+        clearFiel()
       })
-      .catch((error) => {
-        console.error('ERROR: updating bank: ', error)
-      })
+      .catch((error) => console.error('ERROR: updating bank: ', error))
+      .finally(() => (bank.state = false))
   }
 }
 
@@ -169,26 +169,23 @@ const deleteBank = async (id: BigInt) => {
     .then(() => {
       browseList()
     })
-    .catch((error) => {
-      console.error('ERROR: deleting Bank: ', error)
-    })
+    .catch((error) => console.error('ERROR: deleting Bank: ', error))
+    .finally(() => (bank.state = false))
 }
 
 const editBank = async (id: BigInt) => {
   await http
     .get(`/bank/${id}`)
     .then((response) => {
-      // bankModel.value = response.data.data
-      console.log(response.data)
-      bank.id = response.data.data.id
-      bank.name = response.data.data.name
-      bank.agency = response.data.data.agency
-      bank.account = response.data.data.account
+      Object.assign(bank, response.data.data)
+      // bank.id = response.data.data.id
+      // bank.name = response.data.data.name
+      // bank.agency = response.data.data.agency
+      // bank.account = response.data.data.account
       // = { ...response.data }
     })
-    .catch((err) => {
-      console.error('ERROR: loading data for edit: ', err)
-    })
+    .catch((err) => console.error('ERROR: loading data for edit: ', err))
+    .finally(() => (bank.state = false))
 }
 </script>
 
