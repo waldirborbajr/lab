@@ -149,13 +149,12 @@ const browseList = async () => {
       bank.banks = response.data.data
       bank.loading = false
     })
-    .catch(
-      (error) => console.error('ERROR: load', error)
-      // notify({
-      //   group: 'top-right',
-      //   type: 'error',
-      //   text: t('load')
-      // })
+    .catch(() =>
+      notify({
+        group: 'top-right',
+        type: 'error',
+        text: 'ERROR: load'
+      })
     )
     .finally(() => (bank.state = false))
 }
@@ -180,13 +179,12 @@ const onSubmitClick = async () => {
         // Object.assign(bank, null)
         clearFiel()
       })
-      .catch(
-        (error) => console.error('ERROR: save', error)
-        // notify({
-        //   group: 'top-right',
-        //   type: 'error',
-        //   text: t('save')
-        // })
+      .catch(() =>
+        notify({
+          group: 'top-right',
+          type: 'error',
+          text: 'ERROR: save'
+        })
       )
       .finally(() => (bank.state = false))
   } else {
@@ -198,13 +196,12 @@ const onSubmitClick = async () => {
         // Object.assign(bank, null)
         clearFiel()
       })
-      .catch(
-        (error) => console.error('ERROR: update', error)
-        // notify({
-        //   group: 'top-right',
-        //   type: 'error',
-        //   text: t('update')
-        // })
+      .catch(() =>
+        notify({
+          group: 'top-right',
+          type: 'error',
+          text: 'ERROR: update '
+        })
       )
       .finally(() => (bank.state = false))
   }
@@ -216,13 +213,12 @@ const deleteBank = async (id: BigInt) => {
     .then(() => {
       browseList()
     })
-    .catch(
-      (error) => console.error('ERROR: delete: ', error)
-      // notify({
-      //   group: 'top-right',
-      //   type: 'error',
-      //   text: t('delete')
-      // })
+    .catch(() =>
+      notify({
+        group: 'top-right',
+        type: 'error',
+        text: 'ERROR: delete'
+      })
     )
     .finally(() => (bank.state = false))
 }
@@ -233,7 +229,13 @@ const editBank = async (id: BigInt) => {
     .then((response) => {
       Object.assign(bank, response.data.data)
     })
-    .catch((err) => console.error('ERROR: loading data for edit: ', err))
+    .catch(() =>
+      notify({
+        group: 'top-right',
+        type: 'error',
+        text: 'ERROR: edit'
+      })
+    )
     .finally(() => (bank.state = false))
 }
 </script>
