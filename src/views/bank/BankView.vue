@@ -124,7 +124,7 @@ const browseList = async () => {
       bank.loading = false
     })
     .catch((error) => {
-      console.log(error)
+      console.error('ERROR: acquiring data for grid: ', error)
     })
 }
 
@@ -146,9 +146,7 @@ const onSubmitClick = async () => {
         browseList()
         clearFiel()
       })
-      .catch((error) => {
-        console.log(error)
-      })
+      .catch((error) => console.error('ERROR: saving bank: ', error))
   } else {
     // Update bank
     await http
@@ -157,7 +155,7 @@ const onSubmitClick = async () => {
         browseList()
       })
       .catch((error) => {
-        console.log(error)
+        console.error('ERROR: updating bank: ', error)
       })
   }
 }
@@ -169,7 +167,7 @@ const deleteBank = async (id: BigInt) => {
       browseList()
     })
     .catch((error) => {
-      console.log(error)
+      console.error('ERROR: deleting Bank: ', error)
     })
 }
 
@@ -185,8 +183,8 @@ const editBank = async (id: BigInt) => {
       bank.account = response.data.data.account
       // = { ...response.data }
     })
-    .catch((error) => {
-      console.log(error)
+    .catch((err) => {
+      console.error('ERROR: loading data for edit: ', err)
     })
 }
 </script>
