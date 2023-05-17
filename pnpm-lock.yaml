@@ -4,7 +4,7 @@ specifiers:
   '@rushstack/eslint-patch': ^1.2.0
   '@tailwindcss/forms': ^0.5.3
   '@tsconfig/node18': ^2.0.1
-  '@types/node': ^18.16.10
+  '@types/node': ^18.16.12
   '@vitejs/plugin-vue': ^4.2.3
   '@vue/eslint-config-prettier': ^7.1.0
   '@vue/eslint-config-typescript': ^11.0.3
@@ -22,9 +22,9 @@ specifiers:
   prettier: ^2.8.8
   tailwindcss: ^3.3.2
   typescript: ~5.0.4
-  vite: ^4.3.6
+  vite: ^4.3.7
   vue: ^3.3.2
-  vue-i18n: '9'
+  vue-i18n: ^9.2.2
   vue-router: ^4.2.0
   vue-tsc: ^1.6.5
   vuex: ^4.1.0
@@ -44,8 +44,8 @@ devDependencies:
   '@rushstack/eslint-patch': 1.2.0
   '@tailwindcss/forms': 0.5.3_tailwindcss@3.3.2
   '@tsconfig/node18': 2.0.1
-  '@types/node': 18.16.10
-  '@vitejs/plugin-vue': 4.2.3_vite@4.3.6+vue@3.3.2
+  '@types/node': 18.16.12
+  '@vitejs/plugin-vue': 4.2.3_vite@4.3.7+vue@3.3.2
   '@vue/eslint-config-prettier': 7.1.0_aq37wtubambsjkbuajxtwljxa4
   '@vue/eslint-config-typescript': 11.0.3_2scluc6ttmuw6bnoknuoazerjy
   '@vue/tsconfig': 0.4.0
@@ -57,7 +57,7 @@ devDependencies:
   prettier: 2.8.8
   tailwindcss: 3.3.2
   typescript: 5.0.4
-  vite: 4.3.6_@types+node@18.16.10
+  vite: 4.3.7_@types+node@18.16.12
   vue-tsc: 1.6.5_typescript@5.0.4
 
 packages:
@@ -458,8 +458,8 @@ packages:
     resolution: {integrity: sha512-wOuvG1SN4Us4rez+tylwwwCV1psiNVOkJeM3AUWUNWg/jDQY2+HE/444y5gc+jBmRqASOm2Oeh5c1axHobwRKQ==}
     dev: true
 
-  /@types/node/18.16.10:
-    resolution: {integrity: sha512-sMo3EngB6QkMBlB9rBe1lFdKSLqljyWPPWv6/FzSxh/IDlyVWSzE9RiF4eAuerQHybrWdqBgAGb03PM89qOasA==}
+  /@types/node/18.16.12:
+    resolution: {integrity: sha512-tIRrjbY9C277MOfP8M3zjMIhtMlUJ6YVqkGgLjz+74jVsdf4/UjC6Hku4+1N0BS0qyC0JAS6tJLUk9H6JUKviQ==}
     dev: true
 
   /@types/semver/7.5.0:
@@ -596,14 +596,14 @@ packages:
       eslint-visitor-keys: 3.4.1
     dev: true
 
-  /@vitejs/plugin-vue/4.2.3_vite@4.3.6+vue@3.3.2:
+  /@vitejs/plugin-vue/4.2.3_vite@4.3.7+vue@3.3.2:
     resolution: {integrity: sha512-R6JDUfiZbJA9cMiguQ7jxALsgiprjBeHL5ikpXfJCH62pPHtI+JdJ5xWj6Ev73yXSlYl86+blXn1kZHQ7uElxw==}
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
       vite: ^4.0.0
       vue: ^3.2.25
     dependencies:
-      vite: 4.3.6_@types+node@18.16.10
+      vite: 4.3.7_@types+node@18.16.12
       vue: 3.3.2
     dev: true
 
@@ -940,7 +940,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001487
-      electron-to-chromium: 1.4.396
+      electron-to-chromium: 1.4.397
       node-releases: 2.0.10
       update-browserslist-db: 1.0.11_browserslist@4.21.5
     dev: true
@@ -1119,8 +1119,8 @@ packages:
       esutils: 2.0.3
     dev: true
 
-  /electron-to-chromium/1.4.396:
-    resolution: {integrity: sha512-pqKTdqp/c5vsrc0xUPYXTDBo9ixZuGY8es4ZOjjd6HD6bFYbu5QA09VoW3fkY4LF1T0zYk86lN6bZnNlBuOpdQ==}
+  /electron-to-chromium/1.4.397:
+    resolution: {integrity: sha512-jwnPxhh350Q/aMatQia31KAIQdhEsYS0fFZ0BQQlN9tfvOEwShu6ZNwI4kL/xBabjcB/nTy6lSt17kNIluJZ8Q==}
     dev: true
 
   /error-ex/1.3.2:
@@ -1735,8 +1735,8 @@ packages:
     engines: {node: '>= 0.4'}
     dev: true
 
-  /is-core-module/2.12.0:
-    resolution: {integrity: sha512-RECHCBCd/viahWmwj6enj19sKbHfJrddi/6cBDsNTKbNq0f7VeaUkBo60BqzvPqo/W54ChS62Z5qyun7cfOMqQ==}
+  /is-core-module/2.12.1:
+    resolution: {integrity: sha512-Q4ZuBAe2FUsKtyQJoQHlvP8OvBERxO3jEmy1I7hcRXcJBGGHFh/aJBswbXuS9sgrDH2QUO8ilkwNPHvHMd8clg==}
     dependencies:
       has: 1.0.3
     dev: true
@@ -2347,7 +2347,7 @@ packages:
     resolution: {integrity: sha512-Sb+mjNHOULsBv818T40qSPeRiuWLyaGMa5ewydRLFimneixmVy2zdivRl+AF6jaYPC8ERxGDmFSiqui6SfPd+g==}
     hasBin: true
     dependencies:
-      is-core-module: 2.12.0
+      is-core-module: 2.12.1
       path-parse: 1.0.7
       supports-preserve-symlinks-flag: 1.0.0
     dev: true
@@ -2695,8 +2695,8 @@ packages:
       spdx-expression-parse: 3.0.1
     dev: true
 
-  /vite/4.3.6_@types+node@18.16.10:
-    resolution: {integrity: sha512-cqIyLSbA6gornMS659AXTVKF7cvSHMdKmJJwQ9DXq3lwsT1uZSdktuBRlpHQ8VnOWx0QHtjDwxPpGtyo9Fh/Qg==}
+  /vite/4.3.7_@types+node@18.16.12:
+    resolution: {integrity: sha512-MTIFpbIm9v7Hh5b0wSBgkcWzSBz7SAa6K/cBTwS4kUiQJfQLFlZZRJRQgqunCVzhTPCk674tW+0Qaqh3Q00dBg==}
     engines: {node: ^14.18.0 || >=16.0.0}
     hasBin: true
     peerDependencies:
@@ -2720,7 +2720,7 @@ packages:
       terser:
         optional: true
     dependencies:
-      '@types/node': 18.16.10
+      '@types/node': 18.16.12
       esbuild: 0.17.19
       postcss: 8.4.23
       rollup: 3.21.8
