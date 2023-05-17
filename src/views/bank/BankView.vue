@@ -96,41 +96,46 @@
 <script setup lang="ts">
 import { onBeforeMount, reactive } from 'vue'
 import { Trash2, Edit, Loader } from 'lucide-vue-next'
-// import BPButton from '../../components/button/BPButton.vue'
-
-import http from '../../common/http-common.ts'
-// import notify from '@kyvg/vue3-notification'
-
+import { notify } from '@kyvg/vue3-notification'
 // import { useI18n } from 'vue-i18n'
+// import BPButton from '../../components/button/BPButton.vue'
+import http from '../../common/http-common.ts'
 
+// Contants
 // const { t } = useI18n()
-// const { notify } = useNotification()
 
 // Used to build grid
-// <!-- Grid
 onBeforeMount(async () => {
   await browseList()
-  // notify({
-  //   title: 'ERROR',
-  //   text: 'Acquiring data for grid: ',
-  //   type: 'warning'
-  // })
-  // BPNotify()
+  notify({
+    group: 'top-right',
+    type: 'success',
+    text: 'Loading...'
+  })
 })
-// --> Grido
+
+const props = defineProps<{
+  banks: []
+  id: Number
+  name: String
+  agency: String
+  account: String
+  loading: Boolean
+  state: Boolean
+}>()
 
 const bank = reactive({
-  banks: [],
-  id: null,
-  name: '',
-  agency: '',
-  account: '',
-  loading: false,
-  state: false
+  banks: props.banks,
+  id: props.id,
+  name: props.name,
+  agency: props.agency,
+  account: props.account,
+  loading: props.loading,
+  state: props.state
 })
 
 const clearFiel = () => {
-  bank.id = null
+  bank.id = 0
   bank.name = ''
   bank.agency = ''
   bank.account = ''
@@ -144,7 +149,14 @@ const browseList = async () => {
       bank.banks = response.data.data
       bank.loading = false
     })
-    .catch((error) => console.error('ERROR: acquiring data for grid: ', error))
+    .catch(
+      (error) => console.error(t('load'))
+      // notify({
+      //   group: 'top-right',
+      //   type: 'error',
+      //   text: t('load')
+      // })
+    )
     .finally(() => (bank.state = false))
 }
 
@@ -158,15 +170,24 @@ const onNewClick = () => {
 
 const onSubmitClick = async () => {
   bank.state = true
-  if (bank.id === null || bank.id === undefined) {
+  if (bank.id === null || bank.id === undefined || bank.id === 0) {
     // New bank
     await http
       .post('/bank', bank)
       .then(() => {
         browseList()
-        clearFiel()
+
+        Object.assign(bank, null)
+        // clearFiel()
       })
-      .catch((error) => console.error('ERROR: saving bank: ', error))
+      .catch(
+        (error) => console.error(t('save'))
+        // notify({
+        //   group: 'top-right',
+        //   type: 'error',
+        //   text: t('save')
+        // })
+      )
       .finally(() => (bank.state = false))
   } else {
     // Update bank
@@ -174,9 +195,17 @@ const onSubmitClick = async () => {
       .put(`/bank/${bank.id}`, bank)
       .then(() => {
         browseList()
-        clearFiel()
+        Object.assign(bank, null)
+        // clearFiel()
       })
-      .catch((error) => console.error('ERROR: updating bank: ', error))
+      .catch(
+        (error) => console.error(t('update'))
+        // notify({
+        //   group: 'top-right',
+        //   type: 'error',
+        //   text: t('update')
+        // })
+      )
       .finally(() => (bank.state = false))
   }
 }
@@ -187,7 +216,14 @@ const deleteBank = async (id: BigInt) => {
     .then(() => {
       browseList()
     })
-    .catch((error) => console.error('ERROR: deleting Bank: ', error))
+    .catch(
+      (error) => console.error(t('delete'))
+      // notify({
+      //   group: 'top-right',
+      //   type: 'error',
+      //   text: t('delete')
+      // })
+    )
     .finally(() => (bank.state = false))
 }
 
@@ -205,10 +241,16 @@ const editBank = async (id: BigInt) => {
 <i18n lang="json">
 {
   "pt-BR": {
-    "loading": "Por favor aguarde, carregando dados..."
+    "load": "Erro carregando dados.",
+    "save": "Erro salvando dados.",
+    "update": "Erro atualizado dados.",
+    "delete": "Erro ao remover dado."
   },
   "en-US": {
-    "loading": "Please wait, loading data..."
+    "load": "Error loading data.",
+    "save": "Error saving data.",
+    "update": "Error updating data.",
+    "delete": "Error deleting data."
   }
 }
 </i18n>
