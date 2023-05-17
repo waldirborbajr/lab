@@ -8,28 +8,39 @@
         <div>
           <div class="bp-field-div">
             <label class="bp-label" for="name">Bank:</label>
-            <input class="bp-input" v-model.trim="bank.name" id="name" type="text" autofocus required
-              placeholder="Bank name..." />
-            <div v-show="v$.name.$error">
-              <span v-show="v$.name.required">Name is required.</span>
-              <span v-show="v$.name.minLength">Name must be at least 3 characters long.</span>
-            </div>
+            <input
+              class="bp-input"
+              v-model.trim="bank.name"
+              id="name"
+              type="text"
+              autofocus
+              required
+              placeholder="Bank name..."
+            />
           </div>
           <div class="bp-field-div">
             <label class="bp-label" for="agency">Agency:</label>
-            <input v-model.trim="bank.agency" id="agency" class="bp-input" type="text" autofocus required
-              placeholder="Agency number..." />
-            <div class="text-sm font-semibold text-red-700" v-if="v$?.agency?.$dirty && v$?.agency?.$error">
-              Please, Bank Agency Code it is required
-            </div>
+            <input
+              v-model.trim="bank.agency"
+              id="agency"
+              class="bp-input"
+              type="text"
+              autofocus
+              required
+              placeholder="Agency number..."
+            />
           </div>
           <div class="bp-field-div">
             <label class="bp-label" for="account">Account:</label>
-            <input v-model.trim="bank.account" id="account" class="bp-input" type="text" autofocus required
-              placeholder="Account number..." />
-            <div class="text-sm font-semibold text-red-700" v-if="v$?.account?.$dirty && v$?.account?.$error">
-              Please, Bank Account Number it is required
-            </div>
+            <input
+              v-model.trim="bank.account"
+              id="account"
+              class="bp-input"
+              type="text"
+              autofocus
+              required
+              placeholder="Account number..."
+            />
           </div>
         </div>
 
@@ -64,10 +75,16 @@
             <td>{{ b['agency'] }}</td>
             <td>{{ b['account'] }}</td>
             <td class="flex gap-4 p-2">
-              <Trash2 class="transition duration-200 ease-in-out hover:scale-125" color="red"
-                @click="deleteBank(b['id'])" />
-              <Edit class="transition duration-200 ease-in-out hover:scale-125" color="green"
-                @click="editBank(b['id'])" />
+              <Trash2
+                class="transition duration-200 ease-in-out hover:scale-125"
+                color="red"
+                @click="deleteBank(b['id'])"
+              />
+              <Edit
+                class="transition duration-200 ease-in-out hover:scale-125"
+                color="green"
+                @click="editBank(b['id'])"
+              />
             </td>
           </tr>
         </tbody>
@@ -80,17 +97,25 @@
 import { onBeforeMount, reactive } from 'vue'
 import { Trash2, Edit, Loader } from 'lucide-vue-next'
 // import BPButton from '../../components/button/BPButton.vue'
-import { required, integer, minLength } from '@vuelidate/validators'
-import { useVuelidate } from '@vuelidate/core'
+
 import http from '../../common/http-common.ts'
+// import notify from '@kyvg/vue3-notification'
+
 // import { useI18n } from 'vue-i18n'
 
 // const { t } = useI18n()
+// const { notify } = useNotification()
 
 // Used to build grid
 // <!-- Grid
 onBeforeMount(async () => {
   await browseList()
+  // notify({
+  //   title: 'ERROR',
+  //   text: 'Acquiring data for grid: ',
+  //   type: 'warning'
+  // })
+  // BPNotify()
 })
 // --> Grido
 
@@ -103,14 +128,6 @@ const bank = reactive({
   loading: false,
   state: false
 })
-
-const rules = {
-  name: { required, minLength: minLength(3) },
-  agency: { required, integer, minLength: minLength(2) },
-  account: { required, integer, minLength: minLength(2) }
-}
-
-const v$ = useVuelidate(rules, bank)
 
 const clearFiel = () => {
   bank.id = null
@@ -179,11 +196,6 @@ const editBank = async (id: BigInt) => {
     .get(`/bank/${id}`)
     .then((response) => {
       Object.assign(bank, response.data.data)
-      // bank.id = response.data.data.id
-      // bank.name = response.data.data.name
-      // bank.agency = response.data.data.agency
-      // bank.account = response.data.data.account
-      // = { ...response.data }
     })
     .catch((err) => console.error('ERROR: loading data for edit: ', err))
     .finally(() => (bank.state = false))
