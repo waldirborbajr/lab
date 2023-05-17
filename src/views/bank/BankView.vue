@@ -82,6 +82,9 @@ import { Trash2, Edit, Loader } from 'lucide-vue-next'
 import { required, integer, minLength } from '@vuelidate/validators'
 import { useVuelidate } from '@vuelidate/core'
 import http from '../../common/http-common.ts'
+// import { useI18n } from 'vue-i18n'
+
+// const { t } = useI18n()
 
 // Used to build grid
 // <!-- Grid
@@ -188,3 +191,14 @@ const editBank = async (id: BigInt) => {
     })
 }
 </script>
+
+<i18n lang="json">
+{
+  "pt-BR": {
+    "loading": "Por favor aguarde, carregando dados..."
+  },
+  "en-US": {
+    "loading": "Please wait, loading data..."
+  }
+}
+</i18n>
