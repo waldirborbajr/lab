@@ -8,17 +8,17 @@
         <div>
           <div class="bp-field-div">
             <label class="bp-label" for="name">Bank:</label>
-            <input class="bp-input" v-model.trim="bank.name" id="name" type="text" autofocus required
+            <input class="bp-input" v-model.trim="name" id="name" type="text" autofocus required
               placeholder="Bank name..." />
           </div>
           <div class="bp-field-div">
             <label class="bp-label" for="agency">Agency:</label>
-            <input v-model.trim="bank.agency" id="agency" class="bp-input" type="text" autofocus required
+            <input v-model.trim="agency" id="agency" class="bp-input" type="text" autofocus required
               placeholder="Agency number..." />
           </div>
           <div class="bp-field-div">
             <label class="bp-label" for="account">Account:</label>
-            <input v-model.trim="bank.account" id="account" class="bp-input" type="text" autofocus required
+            <input v-model.trim="account" id="account" class="bp-input" type="text" autofocus required
               placeholder="Account number..." />
           </div>
         </div>
@@ -51,7 +51,7 @@
           </tr>
         </thead>
         <tbody class="w-full">
-          <tr v-for="(b, index) in bank.banks" :key="index">
+          <tr v-for="(b, index) in banks" :key="index">
             <td>{{ b['name'] }}</td>
             <td>{{ b['agency'] }}</td>
             <td>{{ b['account'] }}</td>
@@ -156,7 +156,7 @@ const onNewClick = () => {
 
 const onSubmitClick = async () => {
   status.state = true
-  if (bank.id === null || bank.id === undefined || bank.id === 0) {
+  if (id.value === null || id.value === undefined || id.value === 0) {
     // New bank
     await http
       .post('/bank', bank)
@@ -177,7 +177,7 @@ const onSubmitClick = async () => {
   } else {
     // Update bank
     await http
-      .put(`/bank/${bank.id}`, bank)
+      .put(`/bank/${id.value}`, bank)
       .then(() => {
         browseList()
         // Object.assign(bank, null)
