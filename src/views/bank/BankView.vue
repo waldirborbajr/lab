@@ -1,6 +1,6 @@
 <template>
   <!-- MAIN GRID WITH TWO COLUMNS -->
-  <div class="grid grid-cols-2 gap-1 mx-auto">
+  <div class="grid grid-cols-2 gap-1 mx-auto bg-bpp-header">
     <!-- Form Cell -->
     <div class="bp-section">
       <h2 class="bp-form-label">Bank Form</h2>
