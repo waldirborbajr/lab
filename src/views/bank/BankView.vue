@@ -8,39 +8,18 @@
         <div>
           <div class="bp-field-div">
             <label class="bp-label" for="name">Bank:</label>
-            <input
-              class="bp-input"
-              v-model.trim="bank.name"
-              id="name"
-              type="text"
-              autofocus
-              required
-              placeholder="Bank name..."
-            />
+            <input class="bp-input" v-model.trim="bank.name" id="name" type="text" autofocus required
+              placeholder="Bank name..." />
           </div>
           <div class="bp-field-div">
             <label class="bp-label" for="agency">Agency:</label>
-            <input
-              v-model.trim="bank.agency"
-              id="agency"
-              class="bp-input"
-              type="text"
-              autofocus
-              required
-              placeholder="Agency number..."
-            />
+            <input v-model.trim="bank.agency" id="agency" class="bp-input" type="text" autofocus required
+              placeholder="Agency number..." />
           </div>
           <div class="bp-field-div">
             <label class="bp-label" for="account">Account:</label>
-            <input
-              v-model.trim="bank.account"
-              id="account"
-              class="bp-input"
-              type="text"
-              autofocus
-              required
-              placeholder="Account number..."
-            />
+            <input v-model.trim="bank.account" id="account" class="bp-input" type="text" autofocus required
+              placeholder="Account number..." />
           </div>
         </div>
 
@@ -56,7 +35,7 @@
 
     <!-- Grid Cell -->
     <div class="bp-section">
-      <input class="p-2 mb-2 border-2" type="text" placeholder="Search..." />
+      <input class="p-2 mb-2 border-2" type="text" v-modal="searchQuery" placeholder="Search..." />
       <div class="align-middle" v-show="bank.loading">
         <Loader class="flex animate-bounce ext-green-600" size="64" stroke-width="4" />
         Please wait, loading data...
@@ -71,21 +50,15 @@
           </tr>
         </thead>
         <tbody class="w-full">
-          <tr v-for="(b, index) in bank.banks" :key="index">
+          <tr v-for="b in searchItems" :key="b.id">
             <td>{{ b['name'] }}</td>
             <td>{{ b['agency'] }}</td>
             <td>{{ b['account'] }}</td>
             <td class="flex gap-4 p-2">
-              <Trash2
-                class="transition duration-200 ease-in-out hover:scale-125"
-                color="red"
-                @click="deleteBank(b['id'])"
-              />
-              <Edit
-                class="transition duration-200 ease-in-out hover:scale-125"
-                color="green"
-                @click="editBank(b['id'])"
-              />
+              <Trash2 class="transition duration-200 ease-in-out hover:scale-125" color="red"
+                @click="deleteBank(b['id'])" />
+              <Edit class="transition duration-200 ease-in-out hover:scale-125" color="green"
+                @click="editBank(b['id'])" />
             </td>
           </tr>
         </tbody>
@@ -96,15 +69,14 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeMount, reactive, onMounted } from 'vue'
+import { onBeforeMount, reactive, onMounted, ref } from 'vue'
 import { Trash2, Edit, Loader } from 'lucide-vue-next'
 import { notify } from '@kyvg/vue3-notification'
 // import BPButton from '../../components/button/BPButton.vue'
 import http from '../../common/http-common.ts'
+import { computed } from 'vue'
 
-// Contants
-
-// Used to build grid
+// On Events
 onBeforeMount(async () => {
   await browseList()
 })
@@ -118,14 +90,25 @@ onMounted(() => {
   })
 })
 
+const searchQuery = ref('')
+
+const searchItems = computed(() => {
+  return banks.filter((bank) => {
+    return bank.name.toLowerCase().indexOf(searchQuery.value.toLowerCase()) != -1
+  })
+})
+
+const status = reactive({
+  loading: false,
+  state: false
+})
+
 const props = defineProps<{
   banks: []
   id: Number
   name: String
   agency: String
   account: String
-  loading: Boolean
-  state: Boolean
 }>()
 
 const bank = reactive({
@@ -133,9 +116,7 @@ const bank = reactive({
   id: props.id,
   name: props.name,
   agency: props.agency,
-  account: props.account,
-  loading: props.loading,
-  state: props.state
+  account: props.account
 })
 
 const clearFiel = () => {
@@ -146,12 +127,12 @@ const clearFiel = () => {
 }
 
 const browseList = async () => {
-  bank.loading = true
+  status.loading = true
   await http
     .get('/bank')
     .then((response) => {
       bank.banks = response.data.data
-      bank.loading = false
+      status.loading = false
     })
     .catch(() =>
       notify({
@@ -160,7 +141,7 @@ const browseList = async () => {
         text: 'ERROR: load'
       })
     )
-    .finally(() => (bank.state = false))
+    .finally(() => (status.state = false))
 }
 
 // const showAlert = () => {
@@ -172,7 +153,7 @@ const onNewClick = () => {
 }
 
 const onSubmitClick = async () => {
-  bank.state = true
+  status.state = true
   if (bank.id === null || bank.id === undefined || bank.id === 0) {
     // New bank
     await http
@@ -190,7 +171,7 @@ const onSubmitClick = async () => {
           text: 'ERROR: save'
         })
       )
-      .finally(() => (bank.state = false))
+      .finally(() => (status.state = false))
   } else {
     // Update bank
     await http
@@ -207,7 +188,7 @@ const onSubmitClick = async () => {
           text: 'ERROR: update '
         })
       )
-      .finally(() => (bank.state = false))
+      .finally(() => (status.state = false))
   }
 }
 
@@ -224,7 +205,7 @@ const deleteBank = async (id: BigInt) => {
         text: 'ERROR: delete'
       })
     )
-    .finally(() => (bank.state = false))
+    .finally(() => (status.state = false))
 }
 
 const editBank = async (id: BigInt) => {
@@ -240,6 +221,6 @@ const editBank = async (id: BigInt) => {
         text: 'ERROR: edit'
       })
     )
-    .finally(() => (bank.state = false))
+    .finally(() => (status.state = false))
 }
 </script>
