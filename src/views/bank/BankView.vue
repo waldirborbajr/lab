@@ -35,8 +35,9 @@
 
     <!-- Grid Cell -->
     <div class="bp-section">
-      <input class="p-2 mb-2 border-2" type="text" v-modal="searchQuery" placeholder="Search..." />
-      <div class="align-middle" v-show="bank.loading">
+      <input class="p-2 mb-2 border-2" type="text" v-model.trim="searchCriteria" @keyup="searchBank"
+        placeholder="Search..." />
+      <div class="align-middle" v-show="status.loading">
         <Loader class="flex animate-bounce ext-green-600" size="64" stroke-width="4" />
         Please wait, loading data...
       </div>
@@ -50,7 +51,7 @@
           </tr>
         </thead>
         <tbody class="w-full">
-          <tr v-for="b in searchItems" :key="b.id">
+          <tr v-for="(b, index) in bank.banks" :key="index">
             <td>{{ b['name'] }}</td>
             <td>{{ b['agency'] }}</td>
             <td>{{ b['account'] }}</td>
@@ -69,12 +70,11 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeMount, reactive, onMounted, ref } from 'vue'
+import { onBeforeMount, reactive, onMounted, ref, toRefs } from 'vue'
 import { Trash2, Edit, Loader } from 'lucide-vue-next'
 import { notify } from '@kyvg/vue3-notification'
 // import BPButton from '../../components/button/BPButton.vue'
 import http from '../../common/http-common.ts'
-import { computed } from 'vue'
 
 // On Events
 onBeforeMount(async () => {
@@ -90,41 +90,43 @@ onMounted(() => {
   })
 })
 
-const searchQuery = ref('')
-
-const searchItems = computed(() => {
-  return banks.filter((bank) => {
-    return bank.name.toLowerCase().indexOf(searchQuery.value.toLowerCase()) != -1
-  })
-})
+const searchCriteria = ref('')
 
 const status = reactive({
   loading: false,
   state: false
 })
 
-const props = defineProps<{
-  banks: []
-  id: Number
-  name: String
-  agency: String
-  account: String
-}>()
+// const props = defineProps<{
+//   banks: []
+//   id: Number
+//   name: String
+//   agency: String
+//   account: String
+// }>()
 
 const bank = reactive({
-  banks: props.banks,
-  id: props.id,
-  name: props.name,
-  agency: props.agency,
-  account: props.account
+  banks: [],
+  id: null,
+  name: null,
+  agency: null,
+  account: null
 })
 
+const { banks, id, name, agency, account } = toRefs(bank)
+
 const clearFiel = () => {
-  bank.id = 0
-  bank.name = ''
-  bank.agency = ''
-  bank.account = ''
+  banks.value = []
+  id.value = null
+  name.value = null
+  agency.value = null
+  account.value = null
 }
+
+const searchBank = () => ({})
+// const searchBank = computed(() => {
+//   return bank.banks.filter(searchCriteria.value.toLowerCase())
+// })
 
 const browseList = async () => {
   status.loading = true
