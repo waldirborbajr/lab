@@ -8,18 +8,39 @@
         <div>
           <div class="bp-field-div">
             <label class="bp-label" for="name">Bank:</label>
-            <input class="bp-input" v-model.trim="name" id="name" type="text" autofocus required
-              placeholder="Bank name..." />
+            <input
+              class="bp-input"
+              v-model.trim="name"
+              id="name"
+              type="text"
+              autofocus
+              required
+              placeholder="Bank name..."
+            />
           </div>
           <div class="bp-field-div">
             <label class="bp-label" for="agency">Agency:</label>
-            <input v-model.trim="agency" id="agency" class="bp-input" type="text" autofocus required
-              placeholder="Agency number..." />
+            <input
+              v-model.trim="agency"
+              id="agency"
+              class="bp-input"
+              type="text"
+              autofocus
+              required
+              placeholder="Agency number..."
+            />
           </div>
           <div class="bp-field-div">
             <label class="bp-label" for="account">Account:</label>
-            <input v-model.trim="account" id="account" class="bp-input" type="text" autofocus required
-              placeholder="Account number..." />
+            <input
+              v-model.trim="account"
+              id="account"
+              class="bp-input"
+              type="text"
+              autofocus
+              required
+              placeholder="Account number..."
+            />
           </div>
         </div>
 
@@ -35,10 +56,15 @@
 
     <!-- Grid Cell -->
     <div class="bp-section">
-      <input class="p-2 mb-2 border-2" type="text" v-model.trim="searchCriteria" @keyup="searchBank"
-        placeholder="Search..." />
+      <input
+        class="p-2 mb-2 border-2"
+        type="text"
+        v-model.trim="searchCriteria"
+        @keyup="searchBank"
+        placeholder="Search..."
+      />
       <div class="align-middle" v-show="status.loading">
-        <Loader class="flex animate-bounce ext-green-600" size="64" stroke-width="4" />
+        <Loader class="flex animate-bounce ext-green-600" />
         Please wait, loading data...
       </div>
       <table class="w-full bg-white table-auto table-striped border-collapse: collpase">
@@ -56,10 +82,16 @@
             <td>{{ b['agency'] }}</td>
             <td>{{ b['account'] }}</td>
             <td class="flex gap-4 p-2">
-              <Trash2 class="transition duration-200 ease-in-out hover:scale-125" color="red"
-                @click="deleteBank(b['id'])" />
-              <Edit class="transition duration-200 ease-in-out hover:scale-125" color="green"
-                @click="editBank(b['id'])" />
+              <Trash2
+                class="transition duration-200 ease-in-out hover:scale-125"
+                color="red"
+                @click="deleteBank(b['id'])"
+              />
+              <Edit
+                class="transition duration-200 ease-in-out hover:scale-125"
+                color="green"
+                @click="editBank(b['id'])"
+              />
             </td>
           </tr>
         </tbody>

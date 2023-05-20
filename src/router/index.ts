@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 import BankView from '../views/bank/BankView.vue'
 
 const routes = [
@@ -6,7 +6,7 @@ const routes = [
     path: '/',
     name: 'bank',
     component: BankView
-  },
+  }
 ]
 
 const router = createRouter({
